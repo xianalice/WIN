@@ -1,0 +1,243 @@
+<head>
+    <meta charset="utf-8">
+    <title>News</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+</head>
+<style>
+    #container {
+        padding-top:1%;
+        margin-top:-1%;
+        width:100%;
+        display:inline-block;
+    }
+    #dannys_corner {
+        float: left;
+        border: 3px solid black;
+        width: 20%;
+        height:auto;
+        min-height:700px;
+        height:auto !important;  
+        display: block;   
+    }
+    #feed {
+        border: 3px solid black;
+        width: auto;
+        height: auto;
+        min-height: 700px;
+        height:auto !important;    
+    }
+    #filter {
+        border: 3px solid black;
+        width: 20%;
+        height: auto;
+        min-height: 700px;
+        height:auto !important;  
+        float:right;     
+
+    }
+    #logo{
+       border: 3px solid red;
+       width: 100%;
+       height: 200px; 
+       background-image: url('images/Danny_Logo.png');  
+       background-repeat: no-repeat;
+       background-size:100%;
+
+    }
+
+    h1{
+        padding: 7px;
+        display: inline-block;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size:20;
+        color:white;
+    }
+
+    h2 {
+        font-size:16;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align:center;
+        color:white;
+
+    }
+    .content_post{
+        border: 3px solid blue;
+        width:40%;
+        height: 400px;  
+        margin-left: 30%;
+        margin-top:3%;
+        background-color: white;
+        border-radius: 5%;
+    }
+    #greyline {
+        margin-left:-5px;
+    }
+
+    .user_info {
+        border: 3px solid green;
+        width:100%;
+        height:40px;
+        display:inline-block;
+        padding-top: 5%;
+        border-radius: 5%;
+
+
+    }
+    .user_info img {
+        padding-top:-3%;
+        width:50px;
+        height:50px;
+        border-radius:50%;
+        float:left;
+        margin-top:-3%;
+    }
+    .user_info a{
+        padding-left:7%;
+        font-size: 
+    }
+
+    .news {
+        border: 3px solid red;
+        width:80%;
+        height:60%;
+        margin-left: 10%;
+
+    }
+
+    .news img {
+        width: 60%;
+        height: 60%;
+        padding-left:21%;
+        margin-top:4%%;
+    }
+    .news p {
+        margin-top:-3%;
+        font-family: "font-family: Arial, Helvetica, sans-serif";
+        font-size:12;
+    }
+
+    #filter h1{
+        font-size:25;
+        padding-left: 15%;
+    }
+
+    #filter h2 {
+        font-size:14;
+        text-align: left;
+        padding-left:20%;
+    }
+    h3 {
+        text-align: center;
+        margin-top:-1%;
+
+    }
+    body {
+        background-image: url("images/Background.png");
+    }
+    .btn-default {
+        margin-left:2%;
+        color: #333;
+        background-color: #bdbdbd;
+        border-color: #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        margin-bottom:4%;
+    }
+
+    .navbar {
+        border: 3px solid green;
+        height:15%;
+/*        background-image:url('Basic_Bar_For_Tags.png');
+*/        margin-top: -1.5%;
+        background-color: #e5e5e5;
+
+
+    }
+
+
+    .search {
+            padding:8px 15px;
+            background:rgba(50, 50, 50, 0.2);
+            border:0px solid #dbdbdb;
+            border-radius:5px;
+    }
+    .button {
+        position:relative;
+        padding:6px 15px;
+        left:-8px;
+        border:2px solid #207cca;
+        background-color:#207cca;
+        color:#fafafa;
+    }
+    .button:hover  {
+    background-color:#fafafa;
+    color:#207cca;
+}
+    #search {
+        border-radius:25;
+    }
+
+    form {
+        padding-left: 45%;
+        padding-top: 3%;
+    }
+</style>
+<body>
+    <div class="navbar">
+        <form>
+                <input id="search" type="text" placeholder="Search..." required>
+                <input type="button" value="Search">
+        </form>
+    <div>
+    <div id="container">
+        <div id="dannys_corner"> 
+            <div id="logo"> </div>
+            <h1>ENTREPRENEURSHIP NETWORK CURATED BY DANNY WARSHAY</h1>
+            <img id="greyline" src="greyline.jpg" width="100%"/>
+            <h2> DANNY'S CORNER </h2>
+            <img id="greyline" src="greyline.jpg" width="100%"/>
+
+        </div>
+        <div id="filter">
+            <h1> Filter </h1>
+            <h2> filter 1 </h2>
+            <h2> filter 2 </h2>
+            <h2> filter 3 </h2>
+            <h2> filter 4 </h2>
+            <h1> Popular Tags </h1>
+            <a class="btn btn-default" href="#" role="button">Popular Tag 1</a>
+            <a class="btn btn-default" href="#" role="button">Link</a>
+            <a class="btn btn-default" href="#" role="button">Another Tag</a>
+
+
+         </div>  
+
+        <div id="feed"> 
+            <div class="content_post">
+                <div class="user_info">
+                    <img class="no_pic" src= "images/empty_profile.png"/>
+                    <a href="www.facebook.com"> USER PROFILE</a>
+                </div>
+                <div class="news">
+                    <h3> LUNA INVESTS IN NEW PLANT </h3>
+                    <p> short snippet of article here. lalalala lalalal klsdfja;dklsfj ;ladj f </p>
+                    <img class="thumbnail_news" src="http://drinks.seriouseats.com/images/2012/06/20120530-runa-juice2-1.jpg" />
+                    <div id="like"> &#x2661 </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
