@@ -1,9 +1,5 @@
-window.addEventListener('load', function(){
-    alert("here we are");
-     setInterval(linkedin, 7000);
-});
+var loggedin = true;
 
-function linkedin() {
-       console.log(IN.User.isAuthorized());
- 
-}
+window.addEventListener('load', function(){
+    console.log("news html loaded")
+});
