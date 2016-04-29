@@ -1,6 +1,6 @@
 var interval;
 window.addEventListener('load', function(){
-    interval = setInterval(linkedin, 3000);
+   interval = setInterval(linkedin, 3000);
 });
 
 function linkedin() {
@@ -19,11 +19,13 @@ function onSuccess(data) {
 }
 
 function onEmailSuccess(data) {
-    var req = new XMLHttpRequest();
-    var postBody = data.emailAddress;
-    req.open('POST', '/login', true);
-    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    req.send("email=" + postBody);
+    $.post({
+        url:'/login',
+        success: function(res) {
+            document.location.href = res.redirect;
+        }
+    }
+    );
 }
 
 // Handle an error response from the API call

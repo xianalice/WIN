@@ -29,16 +29,17 @@ app.get('/', function(request, response){
 });
 
 app.post('/login', function(request, response){
-	var email = request.body.email;
-	console.log(email);
+	// var email = request.body.email;
+	// console.log(email);
 	var authorized = true; //actually initialize to false once we have db up
 	//TODO: check to see if user's email is authorized in db
 	// if(authorized) {
-	response.redirect('/news');
+    console.log("login");
+	response.send({redirect: '/news'});
 	// }
 });
 
 app.get('/news', function(request, response){
-	console.log("here in news");
 	response.render('news.html');
+    console.log("here in news");
 });
