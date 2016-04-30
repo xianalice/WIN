@@ -1,5 +1,4 @@
 var interval;
-var basicData;
 window.addEventListener('load', function(){
    interval = setInterval(linkedin, 3000);
 });
@@ -16,17 +15,11 @@ function onLinkedInLoad() {
 
 // Handle the successful return from the API call
 function onSuccess(data) {
-    basicData = data;
-	getEmailAddress();
-}
-
-function onEmailSuccess(data) {
-    console.log("in onEmailSuccess");
-    basicData.emailAddress = data.emailAddress;
+    console.log("in onSuccess");
     console.log(basicData);
     $.post({
         url:'/login',
-        data: basicData,
+        data: data,
         success: function(res) {
             document.location.href = res.redirect;
         }
@@ -43,10 +36,5 @@ function onError(error) {
 function getProfileData() {
 	console.log("getting profile data");
 	clearInterval(interval);
-    IN.API.Raw("/people/~").result(onSuccess).error(onError);
-}
-
-function getEmailAddress() {
-    console.log("in getEmailAddress");
-	IN.API.Raw("/people/~:(email-address)?format=json").result(onEmailSuccess).error(onError);
+    IN.API.Raw("/people/~:(id,first-name,last-name,email-address,public-profile-url,picture-url,location,industry,headline)").result(onSuccess).error(onError);
 }
