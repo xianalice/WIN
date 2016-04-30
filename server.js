@@ -35,6 +35,7 @@ app.post('/login', function(request, response){
 	//TODO: check to see if user's email is authorized in db
 	// if(authorized) {
     console.log("login");
+    console.log(request.body);
 	response.send({redirect: '/news'});
 	// }
 });
