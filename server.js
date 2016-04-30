@@ -18,6 +18,8 @@ app.use(bodyParser.urlencoded( {
 app.engine('html', engines.hogan); // tell Express to run .html files through Hogan
 app.set('views', __dirname + '/templates'); // tell Express where to find templates
 app.use(express.static(path.join(__dirname, 'javascript')));
+app.use(express.static(path.join(__dirname, 'images')));
+
 
 
 app.listen(8080);

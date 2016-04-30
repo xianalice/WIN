@@ -21,6 +21,7 @@ function onSuccess(data) {
 function onEmailSuccess(data) {
     $.post({
         url:'/login',
+        data: data,
         success: function(res) {
             document.location.href = res.redirect;
         }
