@@ -138,3 +138,53 @@ app.get('/unauthorized', function(request, response){
 	response.render('unauthorized.html');
     console.log("here in unauthorized");
 });
+
+
+//TODO: should be POST with First/Last name in request Body
+app.get('/searchPeople', function(request, response) {
+    var firstName = "Daniel"; //request.firstName
+    var lastName = ""; //request.LastName
+
+    var finalResultIds = [];
+    var finalResults = [];
+    var searchBoth = "SELECT * from people WHERE firstName=$1 AND lastName=$2"
+    var q = conn.query(searchBoth, [
+        firstName,
+        lastName], function(error, result_bothNames) {
+            if (result_bothNames.rows.length != 0) { // print all results
+                for (i = 0; i < result_bothNames.rows.length; i++) {
+                    var row_bothNames = result_bothNames.rows[i];
+                    console.log("able to find result based on Both Names");
+                    console.log(row_bothNames);
+                }
+            } else { // search individually for first and last name 
+                console.log("searching last name");
+                var searchLast = "SELECT * from people WHERE lastName=$1";
+                var q2 = conn.query(searchLast, [lastName], function(error, result_lastName) {
+                   for (i = 0; i < result_lastName.rows.length; i++) {
+                        var row_lastName = result_lastName.rows[i];
+                        console.log("able to find result based on Last Name");
+                        console.log(row_lastName);
+                        finalResults.push(row_lastName);
+                        finalResultIds.push(row_lastName.clientId);
+                   }
+                   console.log("searching first Name");
+                   var searchFirst = "SELECT * from people WHERE firstName=$1";
+                   var q3 = conn.query(searchFirst, [firstName], function(error, result_firstName) {
+                        for (i =0; i < result_firstName.rows.length; i++) {
+                            var row_firstName = result_firstName.rows[i];
+                            if (finalResultIds.indexOf(row_firstName.clientId) == -1) { // not in results
+                                console.log ("able to find result based on first name");
+                                console.log(row_firstName);
+                                finalResultIds.push(row_firstName.clientId);
+                                finalResults.push(row_firstName);
+                            }
+                        }
+                   });
+                });
+
+            }
+
+        });
+
+});
