@@ -47,7 +47,21 @@ app.post('/login', function(request, response){
     		var query2 = conn.query(sql2, request.body.emailAddress, function(err, result) {
     			if(result.rows.length == 1) {
     				console.log('user is in authorized table, not people');
-					response.send({redirect: '/news'});
+                    var addPerson = "INSERT into people VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+                    conn.query(addPerson,
+                        [String(request.body.id),
+                        String(request.body.firstName),
+                        String(request.body.lastName),
+                        null /* state */,
+                        String(request.body.location.country.code),
+                        String(request.body.industry),
+                        String(request.body.headline),
+                        String(request.body.publicProfileUrl),
+                        String(request.body.pictureUrl)]).on('end', function() {
+                            console.log ("successfully added person: " + request.body.firstName + " " + request.body.lastName);
+                            response.send({redirect: '/news'});
+
+                        });
 
     			}
     			else {

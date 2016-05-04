@@ -17,7 +17,7 @@ var createPost = "CREATE TABLE post("
     + "FOREIGN KEY(author) REFERENCES people(id)" 
     + ")";
 var createPeople = "CREATE TABLE people("
-    + "clientId INTEGER PRIMARY KEY ,"
+    + "clientId TEXT PRIMARY KEY,"
     + "firstName TEXT,"
     + "lastName TEXT,"
     + "state TEXT,"
