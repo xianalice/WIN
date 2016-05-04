@@ -16,7 +16,7 @@ function onLinkedInLoad() {
 // Handle the successful return from the API call
 function onSuccess(data) {
     console.log("in onSuccess");
-    console.log(basicData);
+    console.log(data);
     $.post({
         url:'/login',
         data: data,

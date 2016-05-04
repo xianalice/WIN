@@ -33,16 +33,39 @@ app.get('/', function(request, response){
 app.post('/login', function(request, response){
 	// var email = request.body.email;
 	// console.log(email);
-	var authorized = true; //actually initialize to false once we have db up
 	//TODO: check to see if user's email is authorized in db
-	// if(authorized) {
     console.log("login");
     console.log(request.body);
-	response.send({redirect: '/news'});
-	// }
+    var sql = 'SELECT clientId FROM people WHERE clientId=$1';
+    var query = conn.query(sql, request.body.id, function(err, result) {
+    	if(result.rows.length == 1) {
+  			console.log('user is in people table');
+			response.send({redirect: '/news'});
+    	}
+    	else {
+    		var sql2 = 'SELECT email FROM authorized WHERE email=$1';
+    		var query2 = conn.query(sql2, request.body.emailAddress, function(err, result) {
+    			if(result.rows.length == 1) {
+    				console.log('user is in authorized table, not people');
+					response.send({redirect: '/news'});
+
+    			}
+    			else {
+    				console.log('user is unauthorized');
+    				response.send({redirect: '/unauthorized'});
+    			}
+    		});
+    	}
+    });
+	// response.send({redirect: '/news'});
 });
 
 app.get('/news', function(request, response){
 	response.render('news.html');
     console.log("here in news");
+});
+
+app.get('/unauthorized', function(request, response){
+	response.render('unauthorized.html');
+    console.log("here in unauthorized");
 });
