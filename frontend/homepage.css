@@ -1,1 +1,12 @@
 
+/* Importing in Avenir Font */
+@font-face {
+font-family: 'Avenir';
+font-style: normal;
+font-weight: normal;
+src: local('Avenir Next LT Pro Medium Condensed'), url('AvenirNextLTPro-MediumCn.woff') format('woff');
+}
+
+html {
+	background-image: url("../images/Background.png");
+}
