@@ -196,34 +196,38 @@ app.get('/advancedSearchPeople', function(request, response) {
 
 });
 
-//TODO: psot 
+//TODO: post 
 app.get('/newPost', function(request, response){
     var author = "vBg1-uAjNg"; // request.clientId
     var category = "shitpost"; //request.category
     var text = "ello govna"; //request.body
 
 
-    var addPost = "INSERT into post VALUES ($1, $2, $3, $4)";
+    var addPost = "INSERT into posts VALUES ($1, $2, $3, $4)";
     conn.query(addPost,
         [null,
         category,
         author,
-        body
+        text
         ]).on('end', function() {
             console.log("added post");
-            //TODO: Ask Alice how to easily get the id of the post we just inserted into the db
-            var strippedText = removePunctuation(text);
-            var textWords = strippedText.split(" ");
-            for(var i = 0; i < textWords.length; i++) {
-                var addWord = "INSERT into keywords VALUES ($1, $2, $3)";
-                conn.query(addWord,
-                    [null,
-                    snowball.stemword(textWords[i]),
-                    id]).on('end', function() {
-                        console.log("added word " + textWords[i] + " into keywords");
-                    });
-            }
-
+            var getId = "select seq from sqlite_sequence where name=$1";
+            conn.query(getId, ["posts"],function(err, res) {
+                var id = res.rows[0].seq;
+                var strippedText = removePunctuation(text);
+                var textWords = strippedText.split(" ");
+                console.log(textWords);
+                for(var i = 0; i < textWords.length; i++) {
+                    var addWord = "INSERT into keywords VALUES ($1, $2, $3)";
+                    var w = snowball.stemword(textWords[i]);
+                    console.log(w);
+                    conn.query(addWord,
+                        [null,
+                        w,
+                        id]).on('end', function() {});
+                }
+            }); 
+            //TODO: send post back to client for display?           
         });
 });
 

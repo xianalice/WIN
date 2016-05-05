@@ -10,7 +10,7 @@ var checkPost = "drop table if exists post";
 var checkAuthorized = "drop table if exists authorized";
 var checkKeywords = "drop table if exists keywords";
 
-var createPost = "CREATE TABLE post("
+var createPosts = "CREATE TABLE posts("
     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
     + "category TEXT,"
     + "author TEXT,"
@@ -48,7 +48,7 @@ conn.query(checkPost).on('end', function(row) {
 conn.query(checkAuthorized);
 conn.query(checkKeywords);
 
-conn.query(createPost);
+conn.query(createPosts);
 conn.query(createPeople).on('end', function() {
     console.log("created People");
 });
