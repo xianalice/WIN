@@ -8,6 +8,7 @@ var conn = anyDB.createConnection('sqlite3://warshay.db');
 var checkPeople = "drop table if exists people";
 var checkPost = "drop table if exists post";
 var checkAuthorized = "drop table if exists authorized";
+var checkKeywords = "drop table if exists keywords";
 
 var createPost = "CREATE TABLE post("
     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -33,13 +34,19 @@ var createAuthorizedPeople = "CREATE TABLE authorized("
     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
     + "email TEXT"
     + ")";
-
+var createKeywords = "CREATE TABLE keywords("
+    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    + "postId INTEGER,"
+    + "word TEXT,"
+    + "FOREIGN KEY(postId) REFERENCES post(id)"
+    + ")";
 
 conn.query(checkPeople);
 conn.query(checkPost).on('end', function(row) {
     console.log("made rooms table");
 });
 conn.query(checkAuthorized);
+conn.query(checkKeywords);
 
 conn.query(createPost);
 conn.query(createPeople).on('end', function() {
@@ -53,6 +60,10 @@ conn.query(createAuthorizedPeople).on('end', function() {
             console.log("added row" + row);
         });
     });
+});
+
+conn.query(createKeywords).on('end', function() {
+    console.log("added keywords table");
 });
 
 
