@@ -6,7 +6,7 @@ var csv = require('csv');
 var conn = anyDB.createConnection('sqlite3://warshay.db');
 
 var checkPeople = "drop table if exists people";
-var checkPost = "drop table if exists post";
+var checkPost = "drop table if exists posts";
 var checkAuthorized = "drop table if exists authorized";
 var checkKeywords = "drop table if exists keywords";
 
@@ -38,7 +38,7 @@ var createKeywords = "CREATE TABLE keywords("
     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
     + "postId INTEGER,"
     + "word TEXT,"
-    + "FOREIGN KEY(postId) REFERENCES post(id)"
+    + "FOREIGN KEY(postId) REFERENCES posts(id)"
     + ")";
 
 conn.query(checkPeople);

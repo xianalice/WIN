@@ -196,7 +196,7 @@ app.get('/advancedSearchPeople', function(request, response) {
 
 });
 
-//TODO: post 
+//TODO: POST 
 app.get('/newPost', function(request, response){
     var author = "vBg1-uAjNg"; // request.clientId
     var category = "shitpost"; //request.category
@@ -223,35 +223,48 @@ app.get('/newPost', function(request, response){
                     console.log(w);
                     conn.query(addWord,
                         [null,
-                        w,
-                        id]).on('end', function() {});
+                        id,
+                        w]).on('end', function() {});
                 }
             }); 
             //TODO: send post back to client for display?           
         });
 });
 
+
 app.get('/searchPosts', function(request, response) {
+    console.log("in search posts");
     var keyword = "ello"; //request.body?
     var toSearch = snowball.stemword(removePunctuation(keyword));
+    console.log("toSearch: " + toSearch);
     var searchWord = "SELECT postId FROM keywords WHERE word=$1";
     var result_posts = [];
-    var result_posts_id = []; //list of post ids
+    var result_posts_id = []; //list of unique post ids
     conn.query(searchWord, [toSearch], function(error, result){
+        console.log("length of result: ");
+        console.log(result.rows.length);
+        console.log(result);
         for(var i = 0; i < result.rows.length; i++) {
-            var id = result.rows[i];
-            console.log("id is " + id);
+            var row = result.rows[i];
+            var id = row.postId;
+            if (result_posts_id.indexOf(id) == -1) { //if id not in result_posts_id
+                result_posts_id.push(id);
+            }
+        }
+
+        for(var i = 0; i < result_posts_id.length; i++) {
             var searchPosts = "SELECT * FROM posts WHERE id=$1";
-            //MAKE SURE to use proper variable names - res, err, j
-            conn.query(searchPosts, [id], function(err, res){
+            conn.query(searchPosts, [result_posts_id[i]], function(err, res){
                 for(var j = 0; j < res.rows.length; j++) {
                     var post = res.rows[j];
-                    console.log("post is " + post);
+                    console.log("post is ");
+                    console.log(post);
                     result_posts.push(post);
-
                 }
             });
         }
+
+           
         //TODO: Send result_posts back to the client to be displayed as search results
     });
 })
