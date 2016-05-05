@@ -172,7 +172,7 @@ app.get('/advancedSearchPeople', function(request, response) {
                      var row = result.rows[i];
                      console.log("advanced geo");
                      console.log(row);
-                     result_people.append(row); // TODO: send to client
+                     result_people.push(row); // TODO: send to client
 
                 }
             });
@@ -196,13 +196,14 @@ app.get('/advancedSearchPeople', function(request, response) {
 
 });
 
-app.post('/newPost', function(request, response){
-    var author = ""; // request.clientId
-    var category = ""; //request.category
-    var text = ""; //request.body
+//TODO: psot 
+app.get('/newPost', function(request, response){
+    var author = "vBg1-uAjNg"; // request.clientId
+    var category = "shitpost"; //request.category
+    var text = "ello govna"; //request.body
 
 
-    var addPost = "INSERT into post VALUES ($1, $2, $3, $4, $5)";
+    var addPost = "INSERT into post VALUES ($1, $2, $3, $4)";
     conn.query(addPost,
         [null,
         category,
@@ -227,10 +228,11 @@ app.post('/newPost', function(request, response){
 });
 
 app.get('/searchPosts', function(request, response) {
-    var keyword = ""; //request.body?
+    var keyword = "ello"; //request.body?
     var toSearch = snowball.stemword(removePunctuation(keyword));
     var searchWord = "SELECT postId FROM keywords WHERE word=$1";
-    var result_posts;
+    var result_posts = [];
+    var result_posts_id = []; //list of post ids
     conn.query(searchWord, [toSearch], function(error, result){
         for(var i = 0; i < result.rows.length; i++) {
             var id = result.rows[i];
@@ -241,7 +243,7 @@ app.get('/searchPosts', function(request, response) {
                 for(var j = 0; j < res.rows.length; j++) {
                     var post = res.rows[j];
                     console.log("post is " + post);
-                    result_posts.append(post);
+                    result_posts.push(post);
 
                 }
             });
