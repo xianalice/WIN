@@ -35,14 +35,7 @@ app.post('/login', function(request, response){
     var query = conn.query(sql, request.body.id, function(err, result) {
     	if(result.rows.length == 1) {
   			console.log('user is in people table');
-
-                    //TODO: PUT THIS CODE BACK WHERE IT BELONGS (upon authorized login, not in people yet)
-                   
-                    //END OF MISPLACED CODE
-
-
-
-			response.send({redirect: '/news'});
+    		response.send({redirect: '/news'});
     	}
         //If not, check if they're in the authorized table, which means they're allowed to see site content but haven't logged in before
     	else {
@@ -53,59 +46,30 @@ app.post('/login', function(request, response){
     				console.log('user is in authorized table, not people');
                     
                     //First, get the latitude and longitude from their location description using Google's geocode API
-
-                    //Parse the address for URL format
                     var address = String(request.body.location.name);
-                    var modifiedAddress = address.replace(/,/g, "");
-                    var addressComponents = modifiedAddress.split(" ");
-                    var finalAddress = "";
-                    for(var i = 0; i < addressComponents.length; i++){
-                        if(i != (addressComponents.length - 1)) {
-                            finalAddress = finalAddress + addressComponents[i] + "+";
-                        }
-                        else {
-                            finalAddress = finalAddress + addressComponents[i];
-                        }
-                    }
-                    //Assemble the options for the GET request
-                    var options = {
-                        host: 'maps.googleapis.com',
-                        path: '/maps/api/geocode/json?address=' + finalAddress + '+CA&key=AIzaSyC8XzYK1_SBNem9WaJ-H1cZKvjejtGmRpk',
-                    };
-                    //The callback for the GET request
-                    locationReceived = function(res){
-                        console.log("in callback");
-                        var str = '';
-                        res.on('data', function(chunk){
-                            console.log("chunk received");
-                            str = str + chunk;
-                        });
+                    getGeocodeFromLocation(address, addUser);
 
-                        res.on('end', function(){
-                            var jsonStr = JSON.parse(str);
-                            var latitude = jsonStr.results[0].geometry.location.lat;
-                            var longitude = jsonStr.results[0].geometry.location.lng;
-
-                            //Now we can add the user into the people database
-                            var addPerson = "INSERT into people VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
-                            conn.query(addPerson,
-                            [String(request.body.id),
-                            String(request.body.firstName),
-                            String(request.body.lastName),
-                            latitude,
-                            longitude,
-                            String(request.body.location.country.code),
-                            String(request.body.industry),
-                            String(request.body.headline),
-                            String(request.body.publicProfileUrl),
-                            String(request.body.pictureUrl)]).on('end', function() {
-                                console.log ("successfully added person: " + request.body.firstName + " " + request.body.lastName);
-                                response.send({redirect: '/news'});
-                            });
+                    function addUser(geoInfo) {
+                        //Now we can add the user into the people database with their lat/long info included
+                        var latitude = geoInfo.results[0].geometry.location.lat;
+                        var longitude = geoInfo.results[0].geometry.location.lng;
+                        console.log("lat is " + latitude + " and long is " + longitude);
+                        var addPerson = "INSERT into people VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
+                        conn.query(addPerson,
+                        [String(request.body.id),
+                        String(request.body.firstName),
+                        String(request.body.lastName),
+                        latitude,
+                        longitude,
+                        String(request.body.location.country.code),
+                        String(request.body.industry),
+                        String(request.body.headline),
+                        String(request.body.publicProfileUrl),
+                        String(request.body.pictureUrl)]).on('end', function() {
+                            console.log ("successfully added person: " + request.body.firstName + " " + request.body.lastName);
+                            response.send({redirect: '/news'});
                         });
                     }
-                    //Send the GET request to Google's geocode API
-                    https.request(options, locationReceived).end();
     			}
                 //If the user is not in the authoirzed table or people table - take them to the unauthorized user page
     			else {
@@ -164,15 +128,102 @@ app.get('/searchPeople', function(request, response) {
                             if (finalResultIds.indexOf(row_firstName.clientId) == -1) { // not in results
                                 console.log ("able to find result based on first name");
                                 console.log(row_firstName);
-                                finalResultIds.push(row_firstName.clientId);
+                                finalResultIds.getGeocodeFromLocationpush(row_firstName.clientId);
                                 finalResults.push(row_firstName);
                             }
                         }
                    });
                 });
-
             }
+        });
+});
 
+//TODO: should be a POST with lots of info, potentially including location
+app.get('/advancedSearchPeople', function(request, response) {
+    var location = "New York, New York";
+    getGeocodeFromLocation(location, calculateBounds);
+
+    function calculateBounds(geoInfo) {
+        var lat = deg2rad(geoInfo.results[0].geometry.location.lat);
+        var lon = deg2rad(geoInfo.results[0].geometry.location.lng);
+
+        //TODO: make this mutable via user input?
+        var halfSide = 30; //"radius" of the size of the bounding box
+
+        //earth radius at the specified latitude
+        var radius = earthRadius(lat);
+        //radius of the parallel at the specified latitude
+        var pRadius = radius*Math.cos(lat);
+        var latMin = rad2deg(lat - halfSide/radius);
+        var latMax = rad2deg(lat + halfSide/radius);
+        var lonMin = rad2deg(lon - halfSide/pRadius);
+        var lonMax = rad2deg(lon + halfSide/pRadius);
+        console.log("min lat is " + latMin + " max lat is " + latMax + " min lon is " + lonMin + " max lon is " +lonMax);
+        var query = "SELECT * from people WHERE latitude >= $1 AND latitude <= $2 AND longitude >= $3 AND longitude <= $4";
+        conn.query(query, [
+            latMin,
+            latMax,
+            lonMin,
+            lonMax], function(error, result) {
+                for (var i = 0; i < result.rows.length; i++) {
+                     var row = result.rows[i];
+                     console.log("advanced geo");
+                     console.log(row);
+
+                }
+            })
+    }
+
+    function deg2rad(degrees) {
+        return Math.PI*degrees/180.0;
+    }
+    function rad2deg(radians) {
+        return 180.0*radians/Math.PI;
+    }
+    function earthRadius(lat) {
+        var majorAxis = 3963.19;
+        var minorAxis = 3949.9;
+        var An = majorAxis*majorAxis*Math.cos(lat);
+        var Bn = minorAxis*minorAxis*Math.sin(lat);
+        var Ad = majorAxis*Math.cos(lat);
+        var Bd = minorAxis*Math.sin(lat);
+        return Math.sqrt((An*An + Bn*Bn)/(Ad*Ad + Bd*Bd));
+    }
+
+})
+
+function getGeocodeFromLocation(address, callback) {
+    //Parse the address for URL format
+    var modifiedAddress = address.replace(/,/g, "");
+    var addressComponents = modifiedAddress.split(" ");
+    var finalAddress = "";
+    for(var i = 0; i < addressComponents.length; i++){
+        if(i != (addressComponents.length - 1)) {
+            finalAddress = finalAddress + addressComponents[i] + "+";
+        }
+        else {
+            finalAddress = finalAddress + addressComponents[i];
+        }
+    }
+    //Assemble the options for the GET request
+    var options = {
+        host: 'maps.googleapis.com',
+        path: '/maps/api/geocode/json?address=' + finalAddress + '+CA&key=AIzaSyC8XzYK1_SBNem9WaJ-H1cZKvjejtGmRpk',
+    };
+    //The callback for the GET request
+    locationReceived = function(res){
+        console.log("in locationReceived");
+        var str = '';
+        res.on('data', function(chunk){
+            console.log("chunk received");
+            str = str + chunk;
         });
 
-});
+        res.on('end', function(){
+            var jsonStr = JSON.parse(str);
+            callback(jsonStr);
+        });
+    }
+    //Send the GET request to Google's geocode API
+    https.request(options, locationReceived).end();
+}
