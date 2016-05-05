@@ -7,7 +7,7 @@ var conn = anyDB.createConnection('sqlite3://warshay.db');
 
 var checkPeople = "drop table if exists people";
 var checkPost = "drop table if exists post";
- var checkAuthorized = "drop table if exists authorized";
+var checkAuthorized = "drop table if exists authorized";
 
 var createPost = "CREATE TABLE post("
     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -48,12 +48,11 @@ conn.query(createPeople).on('end', function() {
 conn.query(createAuthorizedPeople).on('end', function() {
     console.log("created AuthorizedPeople");
     main('authorized.csv', function(row){
-
-      var query = "INSERT into authorized VALUES ($1, $2)";
+        var query = "INSERT into authorized VALUES ($1, $2)";
         conn.query(query, [null, String(row)]).on('end', function() {
             console.log("added row" + row);
-            });
         });
+    });
 });
 
 
