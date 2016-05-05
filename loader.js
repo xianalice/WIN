@@ -10,7 +10,7 @@ var checkPost = "drop table if exists post";
  var checkAuthorized = "drop table if exists authorized";
 
 var createPost = "CREATE TABLE post("
-    + "id TEXT,"
+    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
     + "category TEXT,"
     + "author TEXT,"
     + "body TEXT,"

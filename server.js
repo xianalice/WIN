@@ -5,6 +5,7 @@ var hogan = require('hogan.js')
 var path = require('path');
 var anyDB = require('any-db');
 var engines = require('consolidate');
+var snowball = require('node-snowball');
 var app = express(); // your app's code here app.listen(8080);
 
 var conn = anyDB.createConnection('sqlite3://warshay.db');
@@ -140,6 +141,7 @@ app.get('/searchPeople', function(request, response) {
 
 //TODO: should be a POST with lots of info, potentially including location
 app.get('/advancedSearchPeople', function(request, response) {
+    //TODO: replace location with actual location from request body
     var location = "New York, New York";
     getGeocodeFromLocation(location, calculateBounds);
 
@@ -160,6 +162,7 @@ app.get('/advancedSearchPeople', function(request, response) {
         var lonMax = rad2deg(lon + halfSide/pRadius);
         console.log("min lat is " + latMin + " max lat is " + latMax + " min lon is " + lonMin + " max lon is " +lonMax);
         var query = "SELECT * from people WHERE latitude >= $1 AND latitude <= $2 AND longitude >= $3 AND longitude <= $4";
+        var result_people;
         conn.query(query, [
             latMin,
             latMax,
@@ -169,9 +172,10 @@ app.get('/advancedSearchPeople', function(request, response) {
                      var row = result.rows[i];
                      console.log("advanced geo");
                      console.log(row);
+                     result_people.append(row); // TODO: send to client
 
                 }
-            })
+            });
     }
 
     function deg2rad(degrees) {
@@ -190,6 +194,60 @@ app.get('/advancedSearchPeople', function(request, response) {
         return Math.sqrt((An*An + Bn*Bn)/(Ad*Ad + Bd*Bd));
     }
 
+});
+
+app.post('/newPost', function(request, response){
+    var author = ""; // request.clientId
+    var category = ""; //request.category
+    var text = ""; //request.body
+
+
+    var addPost = "INSERT into post VALUES ($1, $2, $3, $4, $5)";
+    conn.query(addPost,
+        [null,
+        category,
+        author,
+        body
+        ]).on('end', function() {
+            console.log("added post");
+            //TODO: Ask Alice how to easily get the id of the post we just inserted into the db
+            var strippedText = removePunctuation(text);
+            var textWords = strippedText.split(" ");
+            for(var i = 0; i < textWords.length; i++) {
+                var addWord = "INSERT into keywords VALUES ($1, $2, $3)";
+                conn.query(addWord,
+                    [null,
+                    snowball.stemword(textWords[i]),
+                    id]).on('end', function() {
+                        console.log("added word " + textWords[i] + " into keywords");
+                    });
+            }
+
+        });
+});
+
+app.get('/searchPosts', function(request, response) {
+    var keyword = ""; //request.body?
+    var toSearch = snowball.stemword(removePunctuation(keyword));
+    var searchWord = "SELECT postId FROM keywords WHERE word=$1";
+    var result_posts;
+    conn.query(searchWord, [toSearch], function(error, result){
+        for(var i = 0; i < result.rows.length; i++) {
+            var id = result.rows[i];
+            console.log("id is " + id);
+            var searchPosts = "SELECT * FROM posts WHERE id=$1";
+            //MAKE SURE to use proper variable names - res, err, j
+            conn.query(searchPosts, [id], function(err, res){
+                for(var j = 0; j < res.rows.length; j++) {
+                    var post = res.rows[j];
+                    console.log("post is " + post);
+                    result_posts.append(post);
+
+                }
+            });
+        }
+        //TODO: Send result_posts back to the client to be displayed as search results
+    });
 })
 
 function getGeocodeFromLocation(address, callback) {
@@ -226,4 +284,8 @@ function getGeocodeFromLocation(address, callback) {
     }
     //Send the GET request to Google's geocode API
     https.request(options, locationReceived).end();
+}
+
+function removePunctuation(string) {
+    return string.replace(/[.,\/#!$%\^&\*;:{}=\-_'~()]/g, "");
 }
