@@ -1,3 +1,5 @@
+//TODO: Implement people search by industry, post search by author (first, last)
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var https = require('https');
