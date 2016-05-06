@@ -96,7 +96,7 @@ app.get('/unauthorized', function(request, response){
 
 
 //TODO: should be POST with First/Last name in request Body
-app.get('/searchPeople', function(request, response) {
+app.post('/searchPeople', function(request, response) {
     var firstName = "Daniel"; //request.firstName
     var lastName = ""; //request.LastName
 
@@ -142,7 +142,7 @@ app.get('/searchPeople', function(request, response) {
 });
 
 //TODO: should be a POST with lots of info, potentially including location
-app.get('/advancedSearchPeople', function(request, response) {
+app.post('/advancedSearchPeople', function(request, response) {
     //TODO: replace location with actual location from request body
     var location = "New York, New York";
     getGeocodeFromLocation(location, calculateBounds);
@@ -199,7 +199,7 @@ app.get('/advancedSearchPeople', function(request, response) {
 });
 
 //TODO: POST 
-app.get('/newPost', function(request, response){
+app.post('/newPost', function(request, response){
     var author = "vBg1-uAjNg"; // request.clientId
     var category = "shitpost"; //request.category
     var text = "ello govna"; //request.body
