@@ -265,8 +265,8 @@ app.get('/searchPeopleByNameLocation', function(request, response) {
                             var row_lastName = result_lastName.rows[i];
                             console.log("able to find result based on Last Name");
                             console.log(row_lastName);
-                            finalResultIds.push(row_lastName.clientId);
                             if (result_peopleId.indexOf(row_lastName.clientId) != -1) {
+                                finalResultIds.push(row_lastName.clientId);
                                 finalResults.push(row_lastName);
                             }
                         }
@@ -278,8 +278,8 @@ app.get('/searchPeopleByNameLocation', function(request, response) {
                                 if (finalResultIds.indexOf(row_firstName.clientId) == -1) { // not in last name results
                                     console.log("able to find result based on first name");
                                     console.log(row_firstName);
-                                    finalResultIds.push(row_firstName.clientId);
                                     if (result_peopleId.indexOf(row_firstName.clientId) != -1) {
+                                        finalResultIds.push(row_firstName.clientId);
                                         finalResults.push(row_firstName);
                                     }
                                 }
@@ -296,17 +296,21 @@ app.get('/searchPeopleByNameLocation', function(request, response) {
 });
 
 //TODO: POST 
-app.post('/newPost', function(request, response) {
-    var author = "vBg1-uAjNg"; // request.clientId
+app.get('/newPost', function(request, response) {
+    var author = "skLop5a9Zw"; // request.clientId //TODO:
+    var firstName = "Xian (Alice)";
+    var lastName = "Sun";
     var category = "shitpost"; //request.category
-    var text = "ello govna"; //request.body
+    var text = "ello dude"; //request.body
 
 
-    var addPost = "INSERT into posts VALUES ($1, $2, $3, $4)";
+    var addPost = "INSERT into posts VALUES ($1, $2, $3, $4, $5, $6)";
     conn.query(addPost, [null,
         category,
         author,
-        text
+        text,
+        firstName,
+        lastName
     ]).on('end', function() {
         console.log("added post");
         var getId = "select seq from sqlite_sequence where name=$1";
@@ -330,7 +334,7 @@ app.post('/newPost', function(request, response) {
 });
 
 
-app.get('/searchPosts', function(request, response) {
+app.get('/searchPostsByKeyword', function(request, response) {
     console.log("in search posts");
     var keyword = "ello"; //request.body?
     var toSearch = snowball.stemword(removePunctuation(keyword));
@@ -364,6 +368,79 @@ app.get('/searchPosts', function(request, response) {
 
         //TODO: Send result_posts back to the client to be displayed as search results
     });
+});
+
+
+//Implement post search by author (first, last)
+// TODO: add first and last name to posts
+app.get('/searchPostsByAuthor', function(request, response) {
+   var lastName = "Sun";
+   var firstName = "Alice";
+
+    var finalResultIds = [];
+    var finalResults = [];
+
+    var finalPosts = [];
+
+    var searchBoth = "SELECT * from people WHERE firstName=$1 AND lastName=$2"
+    var q = conn.query(searchBoth, [
+        firstName,
+        lastName
+    ], function(error, result_bothNames) {
+        if (result_bothNames.rows.length != 0) { // print all results
+            for (i = 0; i < result_bothNames.rows.length; i++) {
+                var row_bothNames = result_bothNames.rows[i];
+                console.log("able to find result based on Both Names");
+                console.log(row_bothNames);
+                finalReults.push(row_bothNames);
+            }
+        } else { // search individually for first and last name 
+            console.log("searching last name");
+            var searchLast = "SELECT * from people WHERE lastName=$1";
+            var q2 = conn.query(searchLast, [lastName], function(error, result_lastName) {
+                for (i = 0; i < result_lastName.rows.length; i++) {
+                    var row_lastName = result_lastName.rows[i];
+                    console.log("able to find result based on Last Name");
+                    console.log(row_lastName);
+                    finalResultIds.push(row_lastName.clientId);
+                    finalResults.push(row_lastName); //HEREHRE
+                }
+                console.log("searching first Name");
+                var searchFirst = "SELECT * from people WHERE firstName=$1";
+                var q3 = conn.query(searchFirst, [firstName], function(error, result_firstName) {
+                    for (var i = 0; i < result_firstName.rows.length; i++) {
+                        var row_firstName = result_firstName.rows[i];
+                        if (finalResultIds.indexOf(row_firstName.clientId) == -1) { // not in last name results
+                            console.log("able to find result based on first name");
+                            console.log(row_firstName);
+                            finalResultIds.push(row_firstName.clientId);
+                            finalResults.push(row_firstName);
+                            
+                        }
+                    }
+                    console.log("here");
+
+                    for (var i = 0; i < finalResults.length; i++) {
+                        var id = finalResults[i].clientId;
+                        console.log("id: " + id);
+                        var postQuery = "SELECT * from posts WHERE author=$1";
+                        conn.query(postQuery, [String(id)], function(err, result_posts) {
+                            console.log("results in post query")
+                            console.log(result_posts);
+                            for (var i =0; i < result_posts.rows.length; i++) {
+                                var row_posts = result_posts.rows[i];
+                                finalPosts.push(row_posts) // TODO: send to client!
+                                console.log("fetchign posts: ");
+                                console.log(row_posts);
+                            }
+                        });
+                    }
+
+                });
+            });
+        }
+    });
+
 });
 
 function getGeocodeFromLocation(address, callback) {
