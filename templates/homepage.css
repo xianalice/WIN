@@ -112,9 +112,10 @@ body {
 	margin: 5px 0px 30px 15px;
 }
 
-#create a {
-	color: transparent;
-	font-size: 24pt;
+#spacer {
+	width: 30%;
+	height: 80px;
+	margin: 5px 0px 30px 15px;
 }
 
 #search_buttons {
