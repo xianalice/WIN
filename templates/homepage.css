@@ -1,0 +1,239 @@
+/* Importing in Avenir Font */
+@font-face {
+	font-family: 'Avenir';
+	font-style: normal;
+	font-weight: normal;
+	src: local('Avenir Next LT Pro Medium Condensed'), url('AvenirNextLTPro-MediumCn.woff') format('woff');
+}
+
+html {
+	background-image: url("../images/Background.png");
+}
+
+body {
+	margin: 0px;
+}
+
+
+#holder {
+	width: 100%;
+	top: 0px;
+    left: 0px;
+} 
+
+#top_bar {
+	background-image: url("../images/top_bar.jpg");
+	background-size: 100%;
+    height: 50px;
+}
+
+#pro_pic {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	background-color: red;
+	float: right;
+	margin: 10px 100px 4px 0px;
+}
+
+#my_profile {
+	display: inline-block;
+	float: right;
+	height: 30px;
+	margin: 17px 10px 4px 0px;
+}
+
+#my_profile a {
+	text-decoration: none;
+	color: gray;
+	font-family: 'Avenir';
+	vertical-align: center;
+	margin-top: 10px;
+}
+
+#image_bar {
+	height: 400px;
+	background-size: 100%;
+	background-image: url("../images/banner.jpg");
+}
+
+#bottom_bar {
+	background-image: url("../images/top_bar.jpg");
+	background-size: 100%;
+    height: 50px;
+}
+
+#bottom {
+	width: 100%;
+	height: 400px;
+	margin-top: 15px;
+}
+
+#left {
+	display: inline-block;
+	float: left;
+	width: 25%;
+	height: 400px;
+}
+
+#main {
+	display: inline-block;
+	height: 400px;
+	width: 55%;
+}
+
+#right {
+	display: inline-block;
+	float: right;
+	width: 20%;
+	height: 400px;
+}
+
+#blurb {
+	width: 100%;
+	height: 100px;
+	background-size: cover;
+	background-image: url("../images/description.png");
+}
+
+.bar {
+	margin-top: 15px;
+    width: 100%;
+    height: 2px;
+    background-size: cover;
+    background-image: url("../images/bar.png");
+}
+
+#create {
+	width: 30%;
+	height: 80px;
+	background-image: url("../images/post.png");
+	background-size: cover;
+	margin: 5px 0px 30px 15px;
+}
+
+#create a {
+	color: transparent;
+	font-size: 24pt;
+}
+
+#search_buttons {
+	float: center;
+	text-align: center;
+}
+
+#search_buttons :hover {
+	border-color: #909090  ;
+}
+
+#people {
+	border-width: 3px;
+    border-color: #909090;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 137px;
+    display: inline-block;
+    background-position: 0px 0px;
+    background-image: url("../images/options.png");
+}
+
+#jobs {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 107px;
+    display: inline-block;
+    background-position: -142px 0px;
+    background-image: url("../images/options.png");
+}
+
+#startups {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 131px;
+    display: inline-block;
+    background-position: -254px 0px;
+    background-image: url("../images/options.png");
+}
+
+#funding {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 137px;
+    display: inline-block;
+    background-position: -391px 0px;
+    background-image: url("../images/options.png");
+}
+
+#events {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 113px;
+    display: inline-block;
+    background-position: -535px 0px;
+    background-image: url("../images/options.png");
+}
+
+#searchbar {
+	text-align: center;
+}
+
+.searchbar {
+	height: 24px;
+	width: 300px;
+	font-family: "Avenir";
+	letter-spacing: 1px;
+}
+
+.button {
+	height: 30px;
+	font-family: "Avenir";
+	letter-spacing: 1px;
+}
+
+#post_search {
+	display: none;
+}
+
+form {
+	margin: 10px 10px 10px 10px;
+}
+
+#create_new_button {
+	height: 78px;
+    border: 0px;
+    width: 62px;
+    padding: 0px;
+    background-color: transparent;
+}
+
+#results {
+	margin: 10px 10px 10px 10px;
+}
+
+#results_list {
+	text-align: center;
+	padding-left: 0px;
+}
+
+.result {
+	margin: 20px auto 20px auto;
+    float: center;
+    list-style-type: none;
+    background-size: 100%;
+    width: 50%;
+    height: 338px;
+    background-image: url("../images/post_block.png");
+}

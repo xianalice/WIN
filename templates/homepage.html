@@ -1,20 +1,62 @@
-<head>
-    <meta charset="utf-8">
-    <title>Home</title>
-    <script type="text/javascript" src="//platform.linkedin.com/in.js">
-    api_key:   77ans69don4w9y
-    </script>
-    <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
-   <script src="homepage.js"/></script>
-</head>
-<style>
-    #login {
-       padding-left: 46%;
-        padding-top: 21%; 
-    }
-</style>
-<body>
-    <div id="login">
-        <script type="in/Login"></script>
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title> Warshay Innovation Network (WIN) </title>
+    <link rel="stylesheet" type="text/css" href="homepage.css">
+  </head>
+
+  <body>
+    <div id="holder">
+    	<div id="top_bar"> 
+    		<div id="pro_pic"> </div>
+    		<div id="my_profile"> <a href="#"> Name </a> </div>
+    	</div>
+    	<div id="image_bar"> </div>
+    	<div id="bottom_bar"> </div>
+    	<div id="bottom">
+	    	<div id="left"> 
+	    		<div id="blurb"> </div>
+	    		<div class="bar"></div>
+	    	</div>
+	    	<div id="main"> 
+	    		<div id='search_buttons'>
+	    			<div id="people"> </div>
+	    			<div id="jobs"> </div>
+	    			<div id="startups"> </div>
+	    			<div id="funding"> </div>
+	    			<div id="events"> </div>
+	    		</div>
+	    		<div id="searchbar">
+	    			<form id="people_search">
+            	        <input type="text" class="searchbar" placeholder="Enter Name..." name="peopletext" id="peopletext" >
+       	                <input type="button" class="button" value="Search for People">
+					</form>
+					<form id="post_search">
+            	        <input type="text" class="searchbar" placeholder="Enter Keyword..." name="posttext" id="posttext" >
+            	        <input type="hidden" name="keyword" id="keyword" value="">
+       	                <input type="button" class="button" value="Search for Post">
+					</form>
+	    		</div>
+	    		<div id="results">
+	    			<ul id="results_list">
+	    				<li class="result"></li>
+	    			</ul>
+	    		</div>
+	    	</div>
+	    	<div id="right">
+				<div id="create">
+					<form>
+       	                <input type="button" id="create_new_button" class="button" value="">
+					</form>
+				</div>
+				<div class="bar"></div>
+	    	</div>
+
+    	</div>
     </div>
-</body>
+
+    
+  </body>
+</html>
