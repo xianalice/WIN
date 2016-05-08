@@ -22,14 +22,16 @@ app.engine('html', engines.hogan); // tell Express to run .html files through Ho
 app.set('views', __dirname + '/templates'); // tell Express where to find templates
 app.use(express.static(path.join(__dirname, 'javascript')));
 app.use(express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'public')));
 
+console.log(__dirname);
 
 
 app.listen(8000);
 console.log("Listening:");
 
 app.get('/', function(request, response) {
-    response.render('homepage.html');
+    response.render('initialpage.html');
     //TODO: make the homepage prettier
 });
 
@@ -40,7 +42,7 @@ app.post('/login', function(request, response) {
         if (result.rows.length == 1) {
             console.log('user is in people table');
             response.send({
-                redirect: '/news'
+                redirect: '/homepage'
             });
         }
         //If not, check if they're in the authorized table, which means they're allowed to see site content but haven't logged in before
@@ -75,7 +77,7 @@ app.post('/login', function(request, response) {
                         ]).on('end', function() {
                             console.log("successfully added person: " + request.body.firstName + " " + request.body.lastName);
                             response.send({
-                                redirect: '/news'
+                                redirect: '/homepage'
                             });
                         });
                     }
@@ -92,9 +94,9 @@ app.post('/login', function(request, response) {
     });
 });
 
-app.get('/news', function(request, response) {
-    response.render('news.html');
-    console.log("here in news");
+app.get('/homepage', function(request, response) {
+    response.render('homepage.html');
+    console.log("here in homepage");
 });
 
 app.get('/unauthorized', function(request, response) {
