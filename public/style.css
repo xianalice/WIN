@@ -158,6 +158,59 @@ body {
 	text-align: center;
 }
 
+#categories {
+	float: center;
+	text-align: center;
+}
+
+#cjobs {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 107px;
+    display: inline-block;
+    background-position: -142px 0px;
+    background-image: url("options.png");
+}
+
+#cstartups {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 131px;
+    display: inline-block;
+    background-position: -254px 0px;
+    background-image: url("options.png");
+}
+
+#cfunding {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 137px;
+    display: inline-block;
+    background-position: -391px 0px;
+    background-image: url("options.png");
+}
+
+#cevents {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 113px;
+    display: inline-block;
+    background-position: -535px 0px;
+    background-image: url("options.png");
+}
+
 #create_holder {
 	display: none;
     border-width: 2px;
