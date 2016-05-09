@@ -202,38 +202,41 @@ function loadPeopleSearchListener(){
 		var firstname = this.firstpeopletext.value;
 		var lastname = this.lastpeopletext.value;
 		console.log(firstname, lastname);
-		if (firstname == "" && lastname == "") {
-			console.log("both names blank");
-			$.ajax({
-				type: 'get',
-				url: '/allPeople',
-				success: function(res) {
-					console.log("in basic search getting all people");
-					for (var i=0; i < res.data.length; i++) {
-						console.log(res.data[i]);
-						//SARITA
-						//TODO: display 
-					}
-				}
-			});
-		} else {
-			var data = {"firstName":firstname, "lastName":lastname};
-			$.ajax({
-				type: 'get',
-	        	url:'/searchPeopleByName',
-	        	data: data,
-	        	success: function(res) {
-	        		console.log("in Name response callback");
-	        		for(var i=0; i<res.data.length; i++) {
-	        			//SARITA
-	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
-	        			console.log(res.data[i]);
-	        		}
-	        	}
-	    	});
-		}
-
+		displayPeople(firstname, lastname);
 	});
+}
+
+function displayPeople(firstname, lastname) {
+	if (firstname == "" && lastname == "") {
+		console.log("both names blank");
+		$.ajax({
+			type: 'get',
+			url: '/allPeople',
+			success: function(res) {
+				console.log("in basic search getting all people");
+				for (var i=0; i < res.data.length; i++) {
+					console.log(res.data[i]);
+					//SARITA
+					//TODO: display 
+				}
+			}
+		});
+	} else {
+		var data = {"firstName":firstname, "lastName":lastname};
+		$.ajax({
+			type: 'get',
+	    	url:'/searchPeopleByName',
+	    	data: data,
+	    	success: function(res) {
+	    		console.log("in Name response callback");
+	    		for(var i=0; i<res.data.length; i++) {
+	    			//SARITA
+	    			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
+	    			console.log(res.data[i]);
+	    		}
+	    	}
+		});
+	}
 }
 
 /* Listens for input for people search submission (advanced) */
@@ -368,7 +371,7 @@ function loadOptionsListener(){
 		funding.style.borderColor = "transparent";
 		events.style.borderColor = "transparent";
 		showPeopleSearch();
-		/* TO DO: GET ALL PEOPLE AND DISPLAY */
+		displayPeople("","");
 	} );
 
 	jobs.addEventListener("click", function() {

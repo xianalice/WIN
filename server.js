@@ -442,6 +442,7 @@ app.get('/searchPostsByAuthor', function(request, response) {
                 console.log("able to find result based on Both Names");
                 console.log(row_bothNames);
                 finalReults.push(row_bothNames);
+                /* search key words*/
             }
         } else { // search individually for first and last name 
             console.log("searching last name");
