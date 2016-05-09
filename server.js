@@ -324,22 +324,28 @@ app.get('/searchPeopleByNameLocation', function(request, response) {
     }
 });
 
-//TODO: POST 
-app.get('/newPost', function(request, response) {
-    var author = "skLop5a9Zw"; // request.clientId //TODO:
-    var firstName = "Xian (Alice)";
-    var lastName = "Sun";
-    var category = "shitpost"; //request.category
-    var text = "ello dude"; //request.body
+app.post('/newPost', function(request, response) {
+    console.log("in server, new post");
+    console.log(request.body);
+    var author = request.body.author;
+    var firstName = request.body.firstName;
+    var lastName = request.body.lastName;
+    var category = request.body.category;
+    var text = request.body.text; 
+    var title = request.body.title;
+    var time = Date.now();
+    console.log("date: "  + time);
 
 
-    var addPost = "INSERT into posts VALUES ($1, $2, $3, $4, $5, $6)";
+    var addPost = "INSERT into posts VALUES ($1, $2, $3, $4, $5, $6, $7, $8)";
     conn.query(addPost, [null,
         category,
         author,
         text,
         firstName,
-        lastName
+        lastName,
+        time,
+        title
     ]).on('end', function() {
         console.log("added post");
         var getId = "select seq from sqlite_sequence where name=$1";
@@ -351,17 +357,31 @@ app.get('/newPost', function(request, response) {
             for (var i = 0; i < textWords.length; i++) {
                 var addWord = "INSERT into keywords VALUES ($1, $2, $3)";
                 var w = snowball.stemword(textWords[i]);
-                console.log(w);
                 conn.query(addWord, [null,
                     id,
                     w
-                ]).on('end', function() {});
+                ]).on('end', function() {
+                    response.send({data: null});
+                });
             }
         });
-        //TODO: send post back to client for display          
     });
 });
 
+app.get('/getAllPosts', function(request, response) {
+    var category = request.query.category;
+    console.log("getting all post with category: " + category)
+    var q = "SELECT * from posts where category=$1 ORDER BY time DESC";
+    var posts = [];
+    conn.query(q, [category], function(err, res) {
+        for (var i = 0; i<res.rows.length; i++) {
+            console.log(res.rows[i]);
+            posts.push(res.rows[i]);
+        }
+
+        response.send({data: posts});
+    });
+})
 
 app.get('/searchPostsByKeyword', function(request, response) {
     console.log("in search posts");

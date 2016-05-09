@@ -17,6 +17,8 @@ var createPosts = "CREATE TABLE posts("
     + "body TEXT,"
     + "firstName TEXT,"
     + "lastName TEXT, "
+    + "time INTEGER," //new 
+    + "title TEXT, " //new
     + "FOREIGN KEY(firstName) REFERENCES people(firstName),"
     + "FOREIGN KEY(lastName) REFERENCES people(lastName),"
     + "FOREIGN KEY(author) REFERENCES people(id)" 

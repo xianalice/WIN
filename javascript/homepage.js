@@ -8,6 +8,9 @@ var peoplecheckbox;
 var postcheckbox;
 var postcheckboxunit;
 var clicknumbers = 0;
+var firstName;
+var lastName;
+var clientId;
 
 //Set up input functionality
 document.addEventListener("DOMContentLoaded", function(){
@@ -21,8 +24,6 @@ document.addEventListener("DOMContentLoaded", function(){
 	postcheckbox = document.getElementById("cboxpost");
 	postcheckboxunit = document.getElementById("postcheckbox");
 
-
-
 	loadAdvancedSearch();
 	loadPeopleSearchListener();
 	loadAdvPeopleSearchListener();
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 function getProfileData() {
 	console.log("getting profile data");
-	IN.API.Raw("/people/~:(first-name,last-name,picture-url)").result(onSuccess).error(onError);
+	IN.API.Raw("/people/~:(first-name,last-name,picture-url,id)").result(onSuccess).error(onError);
 }
 
 function loadCreatePost() {
@@ -95,13 +96,23 @@ function loadCreatePost() {
 		document.getElementById("create_holder").style.display = "none";
 		clicknumbers++;
 		
-		var subject = this.subject.value;
+		var title = this.subject.value;
 		var text = this.create_element.value;
-		var topic = this.ctopic.value;
-		var firstname = null; /**** FILL IN W/ USER SESSION INFO FROM API **/
-		var lastname = null; /*** FILL IN W/ USER SESSION INFO FROM  API **/
+		var category = this.ctopic.value;
+	
+		console.log("first Name in post creation: " + firstName + " lastName: " + lastName)
 
-		console.log(subject, text, firstname, lastname, topic); /* TO DO - ADD TO DATABASE - USE BACKEND */
+		console.log(subject, text, firstName, lastName, category); /* TO DO - ADD TO DATABASE - USE BACKEND */
+		var data = {"author": clientId, "firstName": firstName, "lastName": lastName, "title": title, "category": category, "text": text}
+		$.ajax({
+			type: 'post',
+			url: '/newPost',
+			data: data,
+			success: function(res) {
+				console.log("created new post");
+				loadPostsByCategory(category)
+			}
+		});
 
 		this.subject.value = "";
 		this.create_element.value = "";
@@ -109,6 +120,24 @@ function loadCreatePost() {
 		cevents.style.borderColor = "transparent";
 		cstartups.style.borderColor = "transparent";
 		cjobs.style.borderColor = "transparent";
+	});
+}
+
+function loadPostsByCategory(category) {
+	console.log("loading posts in " + category);
+	document.getElementById(category).click();
+	data = {"category": category};
+	$.get({
+		url: '/getAllPosts',
+		data: data,
+		success: function(res) {
+			console.log("displaying posts for " + category);
+			for(var i=0; i<res.data.length; i++) {
+				//SARITA
+				//TODO: call function to display posts
+				console.log(res.data[i]);
+			}
+		}
 	});
 }
 
@@ -155,6 +184,9 @@ function fillInUserInfo(data){
 	/* TO DO: Instead of the random words I gave, put user's name here. */
 	var user_picture = document.getElementById("my_profile");
 	document.getElementById("my_profile").innerHTML = data.firstName + " " + data.lastName; 
+	firstName = data.firstName;
+	lastName = data.lastName;
+	clientId = data.id;
 
 }
 
@@ -199,7 +231,7 @@ function loadPeopleSearchListener(){
 	    	});
 		}
 
-	})
+	});
 }
 
 /* Listens for input for people search submission (advanced) */
@@ -286,7 +318,7 @@ function loadAdvPeopleSearchListener(){
 	    		}
 	    	});
 	    }
-	})
+	});
 }
 
 
@@ -303,7 +335,7 @@ function loadPostSearchListener(){
 		console.log(keyword, topic);
 
 		/* TO DO: BASED ON THESE VALUES, SEND TO BACK END AND GET JSON BACK */
-	})
+	});
 }
 
 
@@ -321,7 +353,7 @@ function loadAdvPostSearchListener(){
 		console.log(keyword, firstname, lastname, topic);
 
 		/* TO DO: BASED ON THESE VALUES, SEND TO BACK END AND GET JSON BACK */
-	})
+	});
 }
 
 
@@ -346,7 +378,7 @@ function loadOptionsListener(){
 		funding.style.borderColor = "transparent";
 		events.style.borderColor = "transparent";
 		showPostSearch();
-		/* TO DO: GET ALL JOBS AND DISPLAY */
+		loadPostsByCategory("jobs");
 	} );
 
 	startups.addEventListener("click", function() {
@@ -358,7 +390,7 @@ function loadOptionsListener(){
 		funding.style.borderColor = "transparent";
 		events.style.borderColor = "transparent";
 		showPostSearch();
-		/* TO DO: GET ALL STARTUPS AND DISPLAY */
+		loadPostsByCategory("startups");
 	} );
 
 	funding.addEventListener("click", function() {
@@ -370,7 +402,7 @@ function loadOptionsListener(){
 		jobs.style.borderColor = "transparent";
 		events.style.borderColor = "transparent";
 		showPostSearch();
-		/* TO DO: GET ALL FUNDING AND DISPLAY */
+		loadPostsByCategory("funding");
 	} );
 
 	events.addEventListener("click", function() {
@@ -382,7 +414,7 @@ function loadOptionsListener(){
 		funding.style.borderColor = "transparent";
 		jobs.style.borderColor = "transparent";
 		showPostSearch();
-		/* TO DO: GET ALL events AND DISPLAY */
+		loadPostsByCategory("events");
 	} );
 }
 
