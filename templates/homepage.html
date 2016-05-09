@@ -26,7 +26,14 @@
 	    		<div class="bar"></div>
 	    	</div>
 	    	<div id="main"> 
-	    		
+	    		<div id="create_holder"> <!-- New STuff -->
+	    			<h1> Create a New Post! </h1>
+		    		<form id="create_form">
+		    			<input type="text" placeholder="Type a subject for your post" name="subject" id="subject" >
+		    			<textarea rows="10" cols="30" placeholder = "What's on your mind?" name="create_element" id="create_element"></textarea> 
+       	        			<input type="submit" class="button" value="Create Post">
+				</form>
+	    		</div>
 	    		<div id='search_buttons'>
 	    			<div id="people"> </div>
 	    			<div id="jobs"> </div>
@@ -36,32 +43,32 @@
 	    		</div>
 	    		<div id="searchbar">
 	    			<form id="people_search">
-            	        <input type="text" class="psearchbar" placeholder="Enter First Name..." name="firstpeopletext" id="firstpeopletext" >
-            	        <input type="text" class="psearchbar" placeholder="Enter Last Name..." name="lastpeopletext" id="lastpeopletext" >
-       	                <input type="submit" class="button" value="Search for People">
-					</form>
-					<form id="adv_people_search">
-            	        <input type="text" class="psearchbar" placeholder="Enter First Name..." name="advfirstpeopletext" id="advfirstpeopletext" >
-            	        <input type="text" class="psearchbar" placeholder="Enter Last Name..." name="advlastpeopletext" id="advlastpeopletext" >
-            	        <input type="text" class="advsearchbar" placeholder="Enter Location..." name="advlocation" id="advlocation" >
-            	        <input type="text" class="advsearchbar" placeholder="Enter Radius of Search (in Miles)..." name="advradius" id="advradius" >
-       	                <input type="submit" class="button" value="Search for People">
-					</form>
-					<label id="peoplecheckbox" class="check"><input type="checkbox" id="cboxpeople" value="advanced_search"> Advanced Search </label>
+		            	        <input type="text" class="psearchbar" placeholder="Enter First Name..." name="firstpeopletext" id="firstpeopletext" >
+		            	        <input type="text" class="psearchbar" placeholder="Enter Last Name..." name="lastpeopletext" id="lastpeopletext" >
+		       	                <input type="submit" class="button" value="Search for People">
+				</form>
+				<form id="adv_people_search">
+		            	        <input type="text" class="psearchbar" placeholder="Enter First Name..." name="advfirstpeopletext" id="advfirstpeopletext" >
+		            	        <input type="text" class="psearchbar" placeholder="Enter Last Name..." name="advlastpeopletext" id="advlastpeopletext" >
+		            	        <input type="text" class="advsearchbar" placeholder="Enter Location..." name="advlocation" id="advlocation" >
+		            	        <input type="text" class="advsearchbar" placeholder="Enter Radius of Search (in Miles)..." name="advradius" id="advradius" >
+		       	                <input type="submit" class="button" value="Search for People">
+				</form>
+				<label id="peoplecheckbox" class="check"><input type="checkbox" id="cboxpeople" value="advanced_search"> Advanced Search </label>
 
-					<form id="post_search">
-            	        <input type="text" class="searchbar" placeholder="Enter Keyword..." name="posttext" id="posttext" >
-            	        <input type="hidden" name="ptopic" id="ptopic" value="">
-       	                <input type="submit" class="button" value="Search for Keyword">
-					</form>
-					<form id="adv_post_search">
-            	        <input type="text" class="psearchbar" placeholder="Enter Keyword..." name="advposttext" id="advposttext" >
-            	        <input type="text" class="psearchbar" placeholder="Enter Author First Name..." name="advfirstposttext" id="advfirstposttext" >
-            	        <input type="text" class="psearchbar" placeholder="Enter Author Last Name..." name="advlastposttext" id="advlastposttext" >
-            	        <input type="hidden" name="aptopic" id="aptopic" value="">
-       	                <input type="submit" class="button" value="Search for Post">
-					</form>
-					<label id="postcheckbox" class="check"><input type="checkbox" id="cboxpost" value="advanced_search"> Advanced Search </label>
+				<form id="post_search">
+		            	        <input type="text" class="searchbar" placeholder="Enter Keyword..." name="posttext" id="posttext" >
+		            	        <input type="hidden" name="ptopic" id="ptopic" value="">
+		       	                <input type="submit" class="button" value="Search for Post">          <!-- Change is here -->
+				</form>
+				<form id="adv_post_search">
+		            	        <input type="text" class="psearchbar" placeholder="Enter Keyword..." name="advposttext" id="advposttext" >
+		            	        <input type="text" class="psearchbar" placeholder="Enter Author First Name..." name="advfirstposttext" id="advfirstposttext" >
+		            	        <input type="text" class="psearchbar" placeholder="Enter Author Last Name..." name="advlastposttext" id="advlastposttext" >
+		            	        <input type="hidden" name="aptopic" id="aptopic" value="">
+		       	                <input type="submit" class="button" value="Search for Post">
+				</form>
+				<label id="postcheckbox" class="check"><input type="checkbox" id="cboxpost" value="advanced_search"> Advanced Search </label>
 	    		</div>
 	    		<div id="results">
 	    			<ul id="results_list">
@@ -70,12 +77,9 @@
 	    		</div>
 	    	</div>
 	    	<div id="right">
-				<div id="create">
-					<form>
-       	                <input type="button" id="create_new_button" class="button" value="">
-					</form>
-				</div>
-				<div class="bar"></div>
+			<div id="create">
+			</div>
+			<div class="bar"></div>
 	    	</div>
 
     	</div>
