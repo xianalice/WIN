@@ -88,40 +88,83 @@ function loadCreatePost() {
 		cfunding.style.borderColor = "transparent";
 		cjobs.style.borderColor = "transparent";
 	} );
+	
+	document.getElementById("exit_form").addEventListener('submit', function(e){
+		e.preventDefault();
+		clicknumbers++;
 
+		document.getElementById("create_holder").style.display = "none";
+			createform.subject.value = "";
+			createform.create_element.value = "";
+			createform.ctopic.value = "";
+			cevents.style.borderColor = "transparent";
+			cstartups.style.borderColor = "transparent";
+			cfunding.style.borderColor = "transparent";
+			cjobs.style.borderColor = "transparent";
+	});
+	
 	createform.addEventListener('submit', function(e){
 
 		e.preventDefault();
+		var a = 0;
+		var b  = 0;
+		var c = 0;
 
-		document.getElementById("create_holder").style.display = "none";
-		clicknumbers++;
+		if (this.ctopic.value == ""){
+			document.getElementById("required").style.display = "block";
+		} else {
+			document.getElementById("required").style.display =  "none";
+			a=1;
+		}
+		if (this.subject.value == ""){
+			document.getElementById("required2").style.display = "block";
+		} else {
+			document.getElementById("required2").style.display =  "none";
+			b=1;
+		}
+		if (this.create_element.value == ""){
+			document.getElementById("required3").style.display = "block";
+		} else {
+			document.getElementById("required3").style.display =  "none";
+			c=1;
+		}
+
+		if ( (a==1) && (b==1) && (c==1) ){
+			document.getElementById("create_holder").style.display = "none";
+			clicknumbers++;
+			
+			var title = this.subject.value;
+			var text = this.create_element.value;
+			var category = this.ctopic.value;
+			
+			console.log("first Name in post creation: " + firstName + " lastName: " + lastName)
+			
+			console.log(subject, text, firstName, lastName, category); /* TO DO - ADD TO DATABASE - USE BACKEND */
+			var data = {"author": clientId, "firstName": firstName, "lastName": lastName, "title": title, "category": category, "text": text}
+			$.ajax({
+				type: 'post',
+				url: '/newPost',
+				data: data,
+				success: function(res) {
+					// console.log("created new post and time is ");
+					// var date = new Date(res.data);
+					// console.log(date);
+					loadPostsByCategory(category);
+				}
+			});
+
+			this.subject.value = "";
+			this.create_element.value = "";
+			this.ctopic.value = "";
+			cevents.style.borderColor = "transparent";
+			cstartups.style.borderColor = "transparent";
+			cfunding.style.borderColor = "transparent";
+			cjobs.style.borderColor = "transparent";
+			var a = 0;
+			var b  = 0;
+			var c = 0;
+		}
 		
-		var title = this.subject.value;
-		var text = this.create_element.value;
-		var category = this.ctopic.value;
-	
-		console.log("first Name in post creation: " + firstName + " lastName: " + lastName)
-
-		console.log(subject, text, firstName, lastName, category); /* TO DO - ADD TO DATABASE - USE BACKEND */
-		var data = {"author": clientId, "firstName": firstName, "lastName": lastName, "title": title, "category": category, "text": text}
-		$.ajax({
-			type: 'post',
-			url: '/newPost',
-			data: data,
-			success: function(res) {
-				// console.log("created new post and time is ");
-				// var date = new Date(res.data);
-				// console.log(date);
-				loadPostsByCategory(category);
-			}
-		});
-
-		this.subject.value = "";
-		this.create_element.value = "";
-		this.ctopic.value = "";
-		cevents.style.borderColor = "transparent";
-		cstartups.style.borderColor = "transparent";
-		cjobs.style.borderColor = "transparent";
 	});
 }
 
