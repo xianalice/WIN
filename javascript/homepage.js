@@ -94,13 +94,16 @@ function loadCreatePost() {
 		clicknumbers++;
 
 		document.getElementById("create_holder").style.display = "none";
-			createform.subject.value = "";
-			createform.create_element.value = "";
-			createform.ctopic.value = "";
-			cevents.style.borderColor = "transparent";
-			cstartups.style.borderColor = "transparent";
-			cfunding.style.borderColor = "transparent";
-			cjobs.style.borderColor = "transparent";
+		createform.subject.value = "";
+		createform.create_element.value = "";
+		createform.ctopic.value = "";
+		cevents.style.borderColor = "transparent";
+		cstartups.style.borderColor = "transparent";
+		cfunding.style.borderColor = "transparent";
+		cjobs.style.borderColor = "transparent";
+		document.getElementById("required").style.display =  "none";
+		document.getElementById("required2").style.display =  "none";
+		document.getElementById("required3").style.display =  "none";
 	});
 	
 	createform.addEventListener('submit', function(e){
