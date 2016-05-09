@@ -61,7 +61,7 @@ body {
 #bottom_bar {
 	background-image: url("top_bar.jpg");
 	background-size: 100%;
-    height: 50px;
+    	height: 50px;
 }
 
 #bottom {
@@ -131,14 +131,49 @@ body {
 	margin: 5px 0px 30px 15px;
 }
 
+#subject {
+	margin-top: 0px;
+	font-family: 'Avenir';
+	background-image: url("Danny_GreyBackgroundColor.jpg");
+	height: 30px;
+	font-size: 12pt;
+	width: 100%;
+	margin: 10px 50px 10px 50px;
+}
+#create_form {	
+	width: 82%;
+}
+
+#create_element {
+	font-family: 'Avenir';
+	background-image: url("Danny_GreyBackgroundColor.jpg");
+	font-size: 12pt;
+	height: 150px;
+	width: 100%;
+	margin: 0px 50px 50px 50px;
+}
 
 #search_buttons {
 	float: center;
 	text-align: center;
 }
 
+#create_holder {
+	display: none;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #B0B0B0;
+    margin: 0px 15px 15px 15px;
+}
+
 #search_buttons :hover {
 	border-color: #909090  ;
+}
+
+h1 {
+	text-align: center;
+	font-family: 'Avenir';
+	color: white;
 }
 
 label {
@@ -302,5 +337,5 @@ form {
     background-size: 100%;
     width: 50%;
     height: 338px;
-    background-image: url("post_block.png");
+    background-image: url(post_block.png");
 }
