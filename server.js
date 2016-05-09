@@ -104,6 +104,19 @@ app.get('/unauthorized', function(request, response) {
     console.log("here in unauthorized");
 });
 
+app.get('/allPeople', function(request, response) {
+    var query = "SELECT * from people";
+    var q = conn.query(query, [], function(error, result) {
+        var allPeople = [];
+        for (var i = 0; i < result.rows.length; i++) {
+            allPeople.push(result.rows[i]);
+        }
+        response.send({
+            data: allPeople
+        });
+    });
+});
+
 
 //People search works with 3 different get requests: 
 // 1) User has provided both Location and Name (done)
@@ -113,8 +126,8 @@ app.get('/unauthorized', function(request, response) {
 //The specific Get request is determined by the client depending on which fields in the advanced search bar they provided 
 
 app.get('/searchPeopleByName', function(request, response) {
-    var firstName = "Daniel"; //request.firstName
-    var lastName = ""; //request.LastName
+    var firstName = request.query.firstName;
+    var lastName = request.query.lastName;
 
     var finalResultIds = [];
     var finalResults = [];
@@ -130,6 +143,9 @@ app.get('/searchPeopleByName', function(request, response) {
                 console.log(row_bothNames);
                 finalReults.push(row_bothNames);
             }
+            response.send({
+                data: finalResults
+            });
         } else { // search individually for first and last name 
             console.log("searching last name");
             var searchLast = "SELECT * from people WHERE lastName=$1";
@@ -153,6 +169,9 @@ app.get('/searchPeopleByName', function(request, response) {
                             finalResults.push(row_firstName);
                         }
                     }
+                    response.send({
+                        data: finalResults
+                    });
                 });
             });
         }
@@ -162,7 +181,7 @@ app.get('/searchPeopleByName', function(request, response) {
 
 app.get('/searchPeopleByLocation', function(request, response) {
     //TODO: replace location with actual location from request body
-    var location = "New York, New York";
+    var location = request.query.location;
 
     getGeocodeFromLocation(location, calculateBounds);
 
@@ -171,7 +190,7 @@ app.get('/searchPeopleByLocation', function(request, response) {
         var lon = deg2rad(geoInfo.results[0].geometry.location.lng);
 
         //TODO: make this mutable via user input?
-        var halfSide = 30; //"radius" of the size of the bounding box
+        var halfSide = request.query.radius; //"radius" of the size of the bounding box
 
         //earth radius at the specified latitude
         var radius = earthRadius(lat);
@@ -199,15 +218,18 @@ app.get('/searchPeopleByLocation', function(request, response) {
                 console.log(row.clientId);
                 result_peopleId.push(row.clientId);
             }
+            response.send({
+                data: result_people
+            });
         });
     }
 });
 
 app.get('/searchPeopleByNameLocation', function(request, response) {
     //TODO: replace location and name with actual location from request body
-    var location = "New York, New York";
-    var firstName = "Daniel";
-    var lastName = "Sun";
+    var location = request.query.location;
+    var firstName = request.query.firstName;
+    var lastName = request.query.lastName;
 
     getGeocodeFromLocation(location, calculateBounds);
 
@@ -216,7 +238,7 @@ app.get('/searchPeopleByNameLocation', function(request, response) {
         var lon = deg2rad(geoInfo.results[0].geometry.location.lng);
 
         //TODO: make this mutable via user input?
-        var halfSide = 30; //"radius" of the size of the bounding box
+        var halfSide = request.query.radius; //"radius" of the size of the bounding box
 
         //earth radius at the specified latitude
         var radius = earthRadius(lat);
@@ -259,6 +281,9 @@ app.get('/searchPeopleByNameLocation', function(request, response) {
                             finalReults.push(row_bothNames);
                         }
                     }
+                    response.send({
+                        data: finalResults
+                    });
                 } else { // search individually for first and last name 
                     console.log("searching last name");
                     var searchLast = "SELECT * from people WHERE lastName=$1";
@@ -288,7 +313,9 @@ app.get('/searchPeopleByNameLocation', function(request, response) {
                             }
                             console.log("final results of combined name/location search are ");
                             console.log(finalResults);
-                            //TODO: Send finalResults back to the client to be displayed as search results
+                            response.send({
+                                data: finalResults
+                            });
                         });
                     });
                 }
