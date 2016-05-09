@@ -28,7 +28,14 @@
 	    	<div id="main"> 
 	    		<div id="create_holder"> <!-- New STuff -->
 	    			<h1> Create a New Post! </h1>
+	    			<div id='categories'>                   <!-- New STuff -->
+		    			<div id="cjobs"> </div>
+		    			<div id="cstartups"> </div>
+		    			<div id="cfunding"> </div>
+		    			<div id="cevents"> </div>
+		    		</div>
 		    		<form id="create_form">
+		    			<input type="hidden" name="ctopic" id="ctopic" value="">
 		    			<input type="text" placeholder="Type a subject for your post" name="subject" id="subject" >
 		    			<textarea rows="10" cols="30" placeholder = "What's on your mind?" name="create_element" id="create_element"></textarea> 
        	        			<input type="submit" class="button" value="Create Post">
