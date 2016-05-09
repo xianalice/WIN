@@ -7,7 +7,6 @@ var peoplecheckboxunit;
 var peoplecheckbox;
 var postcheckbox;
 var postcheckboxunit;
-//var interval;
 
 //Set up input functionality
 document.addEventListener("DOMContentLoaded", function(){
@@ -20,11 +19,9 @@ document.addEventListener("DOMContentLoaded", function(){
 	peoplecheckboxunit = document.getElementById("peoplecheckbox");
 	postcheckbox = document.getElementById("cboxpost");
 	postcheckboxunit = document.getElementById("postcheckbox");
-//	interval = setInterval(linkedin, 3000);
 
 
 
-	fillInUserInfo();
 	loadAdvancedSearch();
 	loadPeopleSearchListener();
 	loadAdvPeopleSearchListener();
@@ -33,25 +30,10 @@ document.addEventListener("DOMContentLoaded", function(){
 	loadOptionsListener();
 });
 
-// function linkedin() {
-// 	console.log("in linkedin");
-//     if(IN.User.isAuthorized()) {
-//     	console.log("user authorized")
-//     	getProfileData();
-//     }
-// }
-
-
-// function onLinkedInLoad() {
-// 	console.log("linkedin load complete");
-//     IN.Event.on(IN, "auth", getProfileData);
-// }
-
-// function getProfileData() {
-// 	console.log("getting profile data");
-// 	clearInterval(interval);
-// 	IN.API.Raw("/people/~:(first-name,last-name,picture-url)").result(onSuccess).error(onError);
-// }
+function getProfileData() {
+	console.log("getting profile data");
+	IN.API.Raw("/people/~:(first-name,last-name,picture-url)").result(onSuccess).error(onError);
+}
 
 
 /* Sets up conditions for advanced search */
@@ -77,27 +59,26 @@ function loadAdvancedSearch(){
 	
 }
 
-// function onSuccess(data) {
-// 	fillInUserInfo(data);
-// }
+function onSuccess(data) {
+	console.log(data);
+	fillInUserInfo(data);
+}
 
-// function onError(err) {
-// 	console.log(err);
-// }
+function onError(err) {
+	console.log(err);
+}
 
 /*Fills in User Info */
 function fillInUserInfo(data){
-	/* TO DO: Instead of this random image. Put the user's linked in picture here */
 	console.log("data from linkedin is ");
 	console.log(data);
 
 	var user_picture = document.getElementById("pro_pic");
-	document.getElementById("pro_pic").style.backgroundImage = "url()";  // PUT LINKED IN PIC HERE
-
+	document.getElementById("pro_pic").style.backgroundImage = 'url(' + data.pictureUrl + ')';  
 
 	/* TO DO: Instead of the random words I gave, put user's name here. */
 	var user_picture = document.getElementById("my_profile");
-	document.getElementById("my_profile").innerHTML = "Your name";   //PUT USER'S NAME HERE
+	document.getElementById("my_profile").innerHTML = data.firstName + " " + data.lastName; 
 
 }
 
@@ -111,8 +92,37 @@ function loadPeopleSearchListener(){
 		var firstname = this.firstpeopletext.value;
 		var lastname = this.lastpeopletext.value;
 		console.log(firstname, lastname);
+		if (firstname == "" && lastname == "") {
+			console.log("both names blank");
+			$.ajax({
+				type: 'get',
+				url: '/allPeople',
+				success: function(res) {
+					console.log("in basic search getting all people");
+					for (var i=0; i < res.data.length; i++) {
+						console.log(res.data[i]);
+						//SARITA
+						//TODO: display 
+					}
+				}
+			});
+		} else {
+			var data = {"firstName":firstname, "lastName":lastname};
+			$.ajax({
+				type: 'get',
+	        	url:'/searchPeopleByName',
+	        	data: data,
+	        	success: function(res) {
+	        		console.log("in Name response callback");
+	        		for(var i=0; i<res.data.length; i++) {
+	        			//SARITA
+	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
+	        			console.log(res.data[i]);
+	        		}
+	        	}
+	    	});
+		}
 
-		/* TO DO: BASED ON THESE VALUES, SEND TO BACK END AND GET JSON BACK */
 	})
 }
 
@@ -128,8 +138,78 @@ function loadAdvPeopleSearchListener(){
 		var location = this.advlocation.value;
 		var radius = this.advradius.value;
 		console.log(firstname, lastname, location, radius);
+		var data = {"firstName":firstname, "lastName":lastname, "location":location, "radius":radius};
 
-		/* TO DO: BASED ON THESE VALUES, SEND TO BACK END AND GET JSON BACK */
+
+		if(location == "" && (firstname != "" || lastname != "")) {
+			$.ajax({
+				type: 'get',
+	        	url:'/searchPeopleByName',
+	        	data: data,
+	        	success: function(res) {
+	        		console.log("in NameOnly response callback");
+	        		for(var i=0; i<res.data.length; i++) {
+	        			//SARITA
+	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
+	        			console.log(res.data[i]);
+	        		}
+	        	}
+	    	});
+	    }
+	    else if(firstname == "" && lastname == "" && location != "") {
+	    	if(radius == "") {
+	    		radius = 30;
+	    	}
+	    	data.radius = radius;
+	    	$.ajax({
+				type: 'get',
+	        	url:'/searchPeopleByLocation',
+	        	data: data,
+	        	success: function(res) {
+	        		console.log("in Location response callback");
+	        		for(var i=0; i<res.data.length; i++) {
+	        			//SARITA
+	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
+	        			console.log(res.data[i]);
+	        		}
+	        	}
+	    	});
+	    }
+	    else if(location != "" && (firstname != "" || lastname != "")) {
+	    	if(radius == "") {
+	    		radius = 30;
+	    	}
+	    	data.radius = radius;
+	    	$.ajax({
+				type: 'get',
+	        	url:'/searchPeopleByNameLocation',
+	        	data: data,
+	        	success: function(res) {
+	        		console.log("in NameLocation response callback");
+	        		for(var i=0; i<res.data.length; i++) {
+	        			//SARITA
+	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
+	        			console.log(res.data[i]);
+	        		}
+	        	}
+	    	});
+	    }
+	    //location and both names are blank - go back to default of displaying all people
+	    else {
+	    	//Call function (to be added) which is also called on page load to display all people
+	    	$.ajax({
+	    		type: 'get',
+	    		url: '/allPeople',
+	    		success: function(res) {
+	    			console.log("in allPeople response callback");
+	    			for(var i=0; i < res.data.length; i++) {
+	    				//SARITA
+	    				//TODO: Display all people 
+	    				console.log(res.data[i]);
+	    			}
+	    		}
+	    	});
+	    }
 	})
 }
 
