@@ -7,6 +7,7 @@ var peoplecheckboxunit;
 var peoplecheckbox;
 var postcheckbox;
 var postcheckboxunit;
+var clicknumbers = 0;
 
 //Set up input functionality
 document.addEventListener("DOMContentLoaded", function(){
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	loadPostSearchListener();
 	loadAdvPostSearchListener();
 	loadOptionsListener();
+	loadCreatePost();
 });
 
 function getProfileData() {
@@ -35,6 +37,80 @@ function getProfileData() {
 	IN.API.Raw("/people/~:(first-name,last-name,picture-url)").result(onSuccess).error(onError);
 }
 
+function loadCreatePost() {
+	var cjobs = document.getElementById("cjobs");
+	var cstartups = document.getElementById("cstartups");
+	var cfunding = document.getElementById("cfunding");
+	var cevents = document.getElementById("cevents");
+
+	document.getElementById("create").addEventListener("click", function() {
+		if (clicknumbers % 2 === 0){
+			document.getElementById("create_holder").style.display = "block";
+		} else {
+			document.getElementById("create_holder").style.display = "none";
+		}
+
+		clicknumbers++;
+	});
+
+
+	var createform = document.getElementById("create_form");
+
+	cjobs.addEventListener("click", function() {
+		createform.ctopic.value = "jobs";
+		cjobs.style.borderColor = "#909090";
+		cstartups.style.borderColor = "transparent";
+		cfunding.style.borderColor = "transparent";
+		cevents.style.borderColor = "transparent";
+	} );
+
+	cstartups.addEventListener("click", function() {
+		createform.ctopic.value = "startups";
+		cstartups.style.borderColor = "#909090";
+		cjobs.style.borderColor = "transparent";
+		cfunding.style.borderColor = "transparent";
+		cevents.style.borderColor = "transparent";
+	} );
+
+	cfunding.addEventListener("click", function() {
+		createform.ctopic.value = "funding";
+		cfunding.style.borderColor = "#909090";
+		cstartups.style.borderColor = "transparent";
+		cjobs.style.borderColor = "transparent";
+		cevents.style.borderColor = "transparent";
+	} );
+
+	cevents.addEventListener("click", function() {
+		createform.ctopic.value = "events";
+		cevents.style.borderColor = "#909090";
+		cstartups.style.borderColor = "transparent";
+		cfunding.style.borderColor = "transparent";
+		cjobs.style.borderColor = "transparent";
+	} );
+
+	createform.addEventListener('submit', function(e){
+
+		e.preventDefault();
+
+		document.getElementById("create_holder").style.display = "none";
+		clicknumbers++;
+		
+		var subject = this.subject.value;
+		var text = this.create_element.value;
+		var topic = this.ctopic.value;
+		var firstname = null; /**** FILL IN W/ USER SESSION INFO FROM API **/
+		var lastname = null; /*** FILL IN W/ USER SESSION INFO FROM  API **/
+
+		console.log(subject, text, firstname, lastname, topic); /* TO DO - ADD TO DATABASE - USE BACKEND */
+
+		this.subject.value = "";
+		this.create_element.value = "";
+		this.ctopic.value = "";
+		cevents.style.borderColor = "transparent";
+		cstartups.style.borderColor = "transparent";
+		cjobs.style.borderColor = "transparent";
+	});
+}
 
 /* Sets up conditions for advanced search */
 function loadAdvancedSearch(){
