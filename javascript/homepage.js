@@ -1,4 +1,3 @@
-
 var people;
 var jobs;
 var startups;
@@ -8,6 +7,7 @@ var peoplecheckboxunit;
 var peoplecheckbox;
 var postcheckbox;
 var postcheckboxunit;
+//var interval;
 
 //Set up input functionality
 document.addEventListener("DOMContentLoaded", function(){
@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function(){
 	peoplecheckboxunit = document.getElementById("peoplecheckbox");
 	postcheckbox = document.getElementById("cboxpost");
 	postcheckboxunit = document.getElementById("postcheckbox");
+//	interval = setInterval(linkedin, 3000);
+
 
 
 	fillInUserInfo();
@@ -30,6 +32,26 @@ document.addEventListener("DOMContentLoaded", function(){
 	loadAdvPostSearchListener();
 	loadOptionsListener();
 });
+
+// function linkedin() {
+// 	console.log("in linkedin");
+//     if(IN.User.isAuthorized()) {
+//     	console.log("user authorized")
+//     	getProfileData();
+//     }
+// }
+
+
+// function onLinkedInLoad() {
+// 	console.log("linkedin load complete");
+//     IN.Event.on(IN, "auth", getProfileData);
+// }
+
+// function getProfileData() {
+// 	console.log("getting profile data");
+// 	clearInterval(interval);
+// 	IN.API.Raw("/people/~:(first-name,last-name,picture-url)").result(onSuccess).error(onError);
+// }
 
 
 /* Sets up conditions for advanced search */
@@ -55,16 +77,27 @@ function loadAdvancedSearch(){
 	
 }
 
+// function onSuccess(data) {
+// 	fillInUserInfo(data);
+// }
+
+// function onError(err) {
+// 	console.log(err);
+// }
+
 /*Fills in User Info */
-function fillInUserInfo(){
-	/* TO DO: Instead this random image. Put the user's linked in picture here */
+function fillInUserInfo(data){
+	/* TO DO: Instead of this random image. Put the user's linked in picture here */
+	console.log("data from linkedin is ");
+	console.log(data);
+
 	var user_picture = document.getElementById("pro_pic");
-	document.getElementById("pro_pic").style.backgroundImage = "url('../images/post.png')";  // PUT LINKED IN PIC HERE
+	document.getElementById("pro_pic").style.backgroundImage = "url()";  // PUT LINKED IN PIC HERE
 
 
 	/* TO DO: Instead of the random words I gave, put user's name here. */
 	var user_picture = document.getElementById("my_profile");
-	document.getElementById("my_profile").innerHTML = "User name";   //PUT USER'S NAME HERE
+	document.getElementById("my_profile").innerHTML = "Your name";   //PUT USER'S NAME HERE
 
 }
 
