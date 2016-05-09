@@ -38,6 +38,11 @@ function getProfileData() {
 }
 
 function loadCreatePost() {
+	var cjobs = document.getElementById("cjobs");
+	var cstartups = document.getElementById("cstartups");
+	var cfunding = document.getElementById("cfunding");
+	var cevents = document.getElementById("cevents");
+
 	document.getElementById("create").addEventListener("click", function() {
 		if (clicknumbers % 2 === 0){
 			document.getElementById("create_holder").style.display = "block";
@@ -48,7 +53,41 @@ function loadCreatePost() {
 		clicknumbers++;
 	});
 
+
 	var createform = document.getElementById("create_form");
+
+	cjobs.addEventListener("click", function() {
+		createform.ctopic.value = "jobs";
+		cjobs.style.borderColor = "#909090";
+		cstartups.style.borderColor = "transparent";
+		cfunding.style.borderColor = "transparent";
+		cevents.style.borderColor = "transparent";
+	} );
+
+	cstartups.addEventListener("click", function() {
+		createform.ctopic.value = "startups";
+		cstartups.style.borderColor = "#909090";
+		cjobs.style.borderColor = "transparent";
+		cfunding.style.borderColor = "transparent";
+		cevents.style.borderColor = "transparent";
+	} );
+
+	cfunding.addEventListener("click", function() {
+		createform.ctopic.value = "funding";
+		cfunding.style.borderColor = "#909090";
+		cstartups.style.borderColor = "transparent";
+		cjobs.style.borderColor = "transparent";
+		cevents.style.borderColor = "transparent";
+	} );
+
+	cevents.addEventListener("click", function() {
+		createform.ctopic.value = "events";
+		cevents.style.borderColor = "#909090";
+		cstartups.style.borderColor = "transparent";
+		cfunding.style.borderColor = "transparent";
+		cjobs.style.borderColor = "transparent";
+	} );
+
 	createform.addEventListener('submit', function(e){
 
 		e.preventDefault();
@@ -58,10 +97,18 @@ function loadCreatePost() {
 		
 		var subject = this.subject.value;
 		var text = this.create_element.value;
+		var topic = this.ctopic.value;
 		var firstname = null; /**** FILL IN W/ USER SESSION INFO FROM API **/
 		var lastname = null; /*** FILL IN W/ USER SESSION INFO FROM  API **/
 
-		console.log(subject, text, firstname, lastname); /* TO DO - ADD TO DATABASE - USE BACKEND */
+		console.log(subject, text, firstname, lastname, topic); /* TO DO - ADD TO DATABASE - USE BACKEND */
+
+		this.subject.value = "";
+		this.create_element.value = "";
+		this.ctopic.value = "";
+		cevents.style.borderColor = "transparent";
+		cstartups.style.borderColor = "transparent";
+		cjobs.style.borderColor = "transparent";
 	});
 }
 
