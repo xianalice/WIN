@@ -109,8 +109,10 @@ function loadCreatePost() {
 			url: '/newPost',
 			data: data,
 			success: function(res) {
-				console.log("created new post");
-				loadPostsByCategory(category)
+				// console.log("created new post and time is ");
+				// var date = new Date(res.data);
+				// console.log(date);
+				loadPostsByCategory(category);
 			}
 		});
 

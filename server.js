@@ -361,7 +361,7 @@ app.post('/newPost', function(request, response) {
                     id,
                     w
                 ]).on('end', function() {
-                    response.send({data: null});
+                    response.send({data: time});
                 });
             }
         });
