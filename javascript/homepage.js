@@ -7,6 +7,7 @@ var peoplecheckboxunit;
 var peoplecheckbox;
 var postcheckbox;
 var postcheckboxunit;
+var clicknumbers = 0;
 
 //Set up input functionality
 document.addEventListener("DOMContentLoaded", function(){
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	loadPostSearchListener();
 	loadAdvPostSearchListener();
 	loadOptionsListener();
+	loadCreatePost();
 });
 
 function getProfileData() {
@@ -35,6 +37,33 @@ function getProfileData() {
 	IN.API.Raw("/people/~:(first-name,last-name,picture-url)").result(onSuccess).error(onError);
 }
 
+function loadCreatePost() {
+	document.getElementById("create").addEventListener("click", function() {
+		if (clicknumbers % 2 === 0){
+			document.getElementById("create_holder").style.display = "block";
+		} else {
+			document.getElementById("create_holder").style.display = "none";
+		}
+
+		clicknumbers++;
+	});
+
+	var createform = document.getElementById("create_form");
+	createform.addEventListener('submit', function(e){
+
+		e.preventDefault();
+
+		document.getElementById("create_holder").style.display = "none";
+		clicknumbers++;
+		
+		var subject = this.subject.value;
+		var text = this.create_element.value;
+		var firstname = null; /**** FILL IN W/ USER SESSION INFO FROM API **/
+		var lastname = null; /*** FILL IN W/ USER SESSION INFO FROM  API **/
+
+		console.log(subject, text, firstname, lastname); /* TO DO - ADD TO DATABASE - USE BACKEND */
+	});
+}
 
 /* Sets up conditions for advanced search */
 function loadAdvancedSearch(){
