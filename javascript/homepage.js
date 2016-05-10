@@ -47,8 +47,13 @@ function displayPerson(person){
     li.classList.add("person");
     var profileUrl = person.profileUrl;
     var pictureUrl = person.pictureUrl;
-    li.innerHTML = ( '<div class="person_pic" style="background-image: url(' + person.pictureUrl +');">' + '</div>' + '<div class="person_holder">' + '<h2 class="name">' + person.firstName + ' ' + person.lastName + '</h2>' + '<h3 class="headline">' 
-                            + person.headline +  '</h3>' + '<h4 class="thirdline">' + person.country.toUpperCase() +'   |   '+ person.industry + '</div>');
+    li.innerHTML = ( '<div class="person_pic" style="background-image: url(' + person.pictureUrl +');">' 
+    				+ '<a href=' + person.profileUrl +' class="backlink"> Link to Linkedin Profile'
+    				+ '</a>'+'</div>' + '<div class="person_holder">' 
+    				+ '<h2 class="name"> <a href=' + person.profileUrl +' class = "namelink">' + person.firstName + ' ' 
+    				+ person.lastName + '</a> </h2>' 
+    				+ '<h3 class="headline">' + person.headline +  '</h3>' + '<h4 class="thirdline">' 
+    				+ person.country.toUpperCase() +'   |   '+ person.industry + '</div>');
     ul.insertBefore(li, ul.childNodes[0]);
 }
 
@@ -270,7 +275,8 @@ function fillInUserInfo(data){
 
 	/* TO DO: Instead of the random words I gave, put user's name here. */
 	var user_picture = document.getElementById("my_profile");
-	document.getElementById("my_profile").innerHTML = data.firstName + " " + data.lastName; 
+	document.getElementById("my_profile").innerHTML = '<a href="' + data.profileUrl+'" class="namelink" >' 
+						+ data.firstName + " " + data.lastName + '</a>'; 
 	firstName = data.firstName;
 	lastName = data.lastName;
 	clientId = data.id;

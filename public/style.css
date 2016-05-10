@@ -45,7 +45,6 @@ h3 {
 	display: inline-block;
 	width: 30px;
 	height: 30px;
-	background-color: red;
 	background-size: cover;
 	float: right;
 	margin: 10px 100px 4px 0px;
@@ -60,7 +59,7 @@ h3 {
 
 #my_profile a {
 	text-decoration: none;
-	color: gray;
+	color: #005c99;
 	font-family: 'Avenir';
 	vertical-align: center;
 	margin-top: 10px;
@@ -455,16 +454,26 @@ form {
 	height: 100px;
     width: 100px;
     display: inline-block;
-    background-color: green;
     float: left;
     margin: 12px 14px 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
+.namelink {
+	color: #005c99;
+	font-family: 'Avenir';
+	text-decoration: none;
+}
+
+.backlink {
+	color: transparent;
+	font-size: 22pt;
+}
 .post_pic {
 	height: 40px;
     width: 40px;
     display: inline-block;
-    background-color: green;
     float: left;
     margin: 12px 14px 0px;
 }
