@@ -1,5 +1,8 @@
-//TODO: Implement post search by author (first, last)
-//TODO: Possibly move calculateBounds outside of app.get calls - would require combining the 4 bounds (minlat, maxlat...) into one object to be returned
+//For the future:
+//1. Change the logic so that upon login, if the user is already in the DB but info is out of date, info gets updated
+//2. Extend post keyword search to include titles?
+//3. Create new DB table to store Industry keywords (use snowball for stemwords), and allow industry search in advanced people search
+//4. Look into posting to LinkedIn when users post on WIN /UPDATE: this seems pretty straightforward & do-able
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -9,7 +12,7 @@ var path = require('path');
 var anyDB = require('any-db');
 var engines = require('consolidate');
 var snowball = require('node-snowball');
-var app = express(); // your app's code here app.listen(8080);
+var app = express();
 
 var conn = anyDB.createConnection('sqlite3://warshay.db');
 
@@ -106,7 +109,7 @@ app.get('/unauthorized', function(request, response) {
 });
 
 app.get('/allPeople', function(request, response) {
-    var query = "SELECT * from people";
+    var query = "SELECT * from people ORDER BY lastName DESC";
     var q = conn.query(query, [], function(error, result) {
         var allPeople = [];
         for (var i = 0; i < result.rows.length; i++) {
