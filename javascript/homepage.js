@@ -31,7 +31,29 @@ document.addEventListener("DOMContentLoaded", function(){
 	loadAdvPostSearchListener();
 	loadOptionsListener();
 	loadCreatePost();
+	displayPost();
+	displayPerson();
 });
+
+function displayPerson(person){
+	console.log(person);
+	var ul = document.getElementById('results_list');
+    var li = document.createElement('li');
+    li.classList.add("person");
+    li.innerHTML = ( '<div class="person_pic" style="background-image: none;">' + '</div>' + '<div class="person_holder">' + '<h2 class="name">' + 'Firstname' + ' Lastname' + '</h2>' + '<h3 class="headline">' 
+                            + 'Headline' +  '</h3>' + '<h4 class="thirdline">' + 'location' +'   |   '+ 'industry' + '</div>');
+    ul.parentNode.insertBefore(li, ul.nextSibling); //acts like insertAfter
+}
+
+function displayPost(post){
+	console.log(post);
+	var ul = document.getElementById('results_list');
+    var li = document.createElement('li');
+    li.classList.add("post");
+    li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' + 'Firstname' + ' Lastname' + '</h2>'
+    				+ '<h2 class="title">' + 'Title' + '</h2>' + '<h2 class="textpost">' + 'Blah Blah Blah Blah' + '</h2>');
+    ul.parentNode.insertBefore(li, ul.nextSibling); //acts like insertAfter
+}
 
 function getProfileData() {
 	console.log("getting profile data");
