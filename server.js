@@ -129,9 +129,9 @@ app.get('/searchPeopleByName', function(request, response) {
     var firstName = request.query.firstName;
     var lastName = request.query.lastName;
 
-    var finalResultIds = [];
     var finalResults = [];
-    var searchBoth = "SELECT * from people WHERE firstName=$1 AND lastName=$2"
+    var searchBoth = "SELECT * from people WHERE firstName=$1 AND lastName=$2";
+    var searchEither = "SELECT * from people WHERE firstName=$1 OR lastName=$2";
     var q = conn.query(searchBoth, [
         firstName,
         lastName
@@ -147,35 +147,21 @@ app.get('/searchPeopleByName', function(request, response) {
                 data: finalResults
             });
         } else { // search individually for first and last name 
-            console.log("searching last name");
-            var searchLast = "SELECT * from people WHERE lastName=$1";
-            var q2 = conn.query(searchLast, [lastName], function(error, result_lastName) {
-                for (i = 0; i < result_lastName.rows.length; i++) {
-                    var row_lastName = result_lastName.rows[i];
-                    console.log("able to find result based on Last Name");
-                    console.log(row_lastName);
-                    finalResults.push(row_lastName);
-                    finalResultIds.push(row_lastName.clientId);
-                }
-                console.log("searching first Name");
-                var searchFirst = "SELECT * from people WHERE firstName=$1";
-                var q3 = conn.query(searchFirst, [firstName], function(error, result_firstName) {
-                    for (i = 0; i < result_firstName.rows.length; i++) {
-                        var row_firstName = result_firstName.rows[i];
-                        if (finalResultIds.indexOf(row_firstName.clientId) == -1) { // not in results
-                            console.log("able to find result based on first name");
-                            console.log(row_firstName);
-                            finalResultIds.push(row_firstName.clientId);
-                            finalResults.push(row_firstName);
-                        }
+              var q = conn.query(searchEither, [
+                    firstName,
+                    lastName
+                ], function(error, result) {
+                    for (var i = 0; i < result.rows.length; i++) {
+                        finalResults.push(result.rows[i]);
+                        console.log("found names");
+                        console.log(result.rows[i]);
                     }
                     response.send({
                         data: finalResults
                     });
                 });
-            });
-        }
-    });
+            }
+        });
 });
 
 
@@ -248,79 +234,23 @@ app.get('/searchPeopleByNameLocation', function(request, response) {
         var latMax = rad2deg(lat + halfSide / radius);
         var lonMin = rad2deg(lon - halfSide / pRadius);
         var lonMax = rad2deg(lon + halfSide / pRadius);
-        var query = "SELECT * from people WHERE latitude >= $1 AND latitude <= $2 AND longitude >= $3 AND longitude <= $4";
-        var result_people = [];
-        var result_peopleId = [];
-        conn.query(query, [
-            latMin,
-            latMax,
-            lonMin,
-            lonMax
-        ], function(error, result) {
-            for (var i = 0; i < result.rows.length; i++) {
-                var row = result.rows[i];
-                console.log("result of location search");
-                console.log(row);
-                result_people.push(row);
-                result_peopleId.push(row.clientId);
-            }
 
-            var finalResultIds = [];
-            var finalResults = [];
-            var searchBoth = "SELECT * from people WHERE firstName=$1 AND lastName=$2"
-            var q = conn.query(searchBoth, [
+        var goodResults = [];
+        
+        var locationPeople = "SELECT * from people WHERE latitude >= $1 AND latitude <= $2 AND longitude >= $3 AND longitude <= $4 AND (firstName=$5 OR lastName=$6)";
+        conn.query(locationPeople, [
+                latMin,
+                latMax,
+                lonMin,
+                lonMax,
                 firstName,
                 lastName
-            ], function(error, result_bothNames) {
-                if (result_bothNames.rows.length != 0) { // print all results
-                    for (i = 0; i < result_bothNames.rows.length; i++) {
-                        var row_bothNames = result_bothNames.rows[i];
-                        console.log("able to find result based on Both Names");
-                        console.log(row_bothNames);
-                        if (result_peopleId.indexOf(row_bothNames.clientId) != -1) {
-                            finalReults.push(row_bothNames);
-                        }
-                    }
-                    response.send({
-                        data: finalResults
-                    });
-                } else { // search individually for first and last name 
-                    console.log("searching last name");
-                    var searchLast = "SELECT * from people WHERE lastName=$1";
-                    var q2 = conn.query(searchLast, [lastName], function(error, result_lastName) {
-                        for (i = 0; i < result_lastName.rows.length; i++) {
-                            var row_lastName = result_lastName.rows[i];
-                            console.log("able to find result based on Last Name");
-                            console.log(row_lastName);
-                            if (result_peopleId.indexOf(row_lastName.clientId) != -1) {
-                                finalResultIds.push(row_lastName.clientId);
-                                finalResults.push(row_lastName);
-                            }
-                        }
-                        console.log("searching first Name");
-                        var searchFirst = "SELECT * from people WHERE firstName=$1";
-                        var q3 = conn.query(searchFirst, [firstName], function(error, result_firstName) {
-                            for (i = 0; i < result_firstName.rows.length; i++) {
-                                var row_firstName = result_firstName.rows[i];
-                                if (finalResultIds.indexOf(row_firstName.clientId) == -1) { // not in last name results
-                                    console.log("able to find result based on first name");
-                                    console.log(row_firstName);
-                                    if (result_peopleId.indexOf(row_firstName.clientId) != -1) {
-                                        finalResultIds.push(row_firstName.clientId);
-                                        finalResults.push(row_firstName);
-                                    }
-                                }
-                            }
-                            console.log("final results of combined name/location search are ");
-                            console.log(finalResults);
-                            response.send({
-                                data: finalResults
-                            });
-                        });
-                    });
+            ], function(error, result) {
+                for(var i = 0; i < result.rows.length; i++) {
+                    goodResults.push(result.rows[i]);
                 }
+                response.send({data: goodResults});
             });
-        });
     }
 });
 
@@ -425,78 +355,43 @@ app.get('/searchPostsByKeyword', function(request, response) {
     });
 });
 
-
-//Implement post search by author (first, last)
-// TODO: add first and last name to posts
 app.get('/searchPostsByAuthor', function(request, response) {
-   var lastName = "Sun";
-   var firstName = "Alice";
-
-    var finalResultIds = [];
-    var finalResults = [];
+    var lastName = request.query.lastName;
+    var firstName = request.query.firstName;
+    var category = request.query.category;
 
     var finalPosts = [];
 
-    var searchBoth = "SELECT * from people WHERE firstName=$1 AND lastName=$2"
-    var q = conn.query(searchBoth, [
-        firstName,
-        lastName
-    ], function(error, result_bothNames) {
-        if (result_bothNames.rows.length != 0) { // print all results
-            for (i = 0; i < result_bothNames.rows.length; i++) {
-                var row_bothNames = result_bothNames.rows[i];
-                console.log("able to find result based on Both Names");
-                console.log(row_bothNames);
-                finalReults.push(row_bothNames);
-                /* search key words*/
-            }
-        } else { // search individually for first and last name 
-            console.log("searching last name");
-            var searchLast = "SELECT * from people WHERE lastName=$1";
-            var q2 = conn.query(searchLast, [lastName], function(error, result_lastName) {
-                for (i = 0; i < result_lastName.rows.length; i++) {
-                    var row_lastName = result_lastName.rows[i];
-                    console.log("able to find result based on Last Name");
-                    console.log(row_lastName);
-                    finalResultIds.push(row_lastName.clientId);
-                    finalResults.push(row_lastName); //HEREHRE
+    var queryBoth = "SELECT * FROM posts WHERE category=$1 AND firstName=$2 AND lastName=$3";
+    var queryEither = "SELECT * FROM posts WHERE category=$1 AND (firstName=$2 OR lastName=$3)";
+    var q = conn.query(queryBoth, [
+            category,
+            firstName,
+            lastName
+        ], function(error, result) {
+            if(result.rows.length > 0) {
+                console.log("post results for both names match");
+                for(var i = 0; i < result.rows.length; i++) {
+                    finalPosts.push(result.rows[i]);
+                    console.log(result.rows[i]);
                 }
-                console.log("searching first Name");
-                var searchFirst = "SELECT * from people WHERE firstName=$1";
-                var q3 = conn.query(searchFirst, [firstName], function(error, result_firstName) {
-                    for (var i = 0; i < result_firstName.rows.length; i++) {
-                        var row_firstName = result_firstName.rows[i];
-                        if (finalResultIds.indexOf(row_firstName.clientId) == -1) { // not in last name results
-                            console.log("able to find result based on first name");
-                            console.log(row_firstName);
-                            finalResultIds.push(row_firstName.clientId);
-                            finalResults.push(row_firstName);
-                            
+                response.send({data: finalPosts});
+            }
+            else {
+                conn.query(queryEither, [
+                        category,
+                        firstName,
+                        lastName
+                    ], function(err, res) {
+                        console.log("post results for one name match");
+                        for(var j = 0; j < res.rows.length; j++) {
+                            finalPosts.push(res.rows[j]);
+                            console.log(res.rows[j]);
                         }
-                    }
-                    console.log("here");
-
-                    for (var i = 0; i < finalResults.length; i++) {
-                        var id = finalResults[i].clientId;
-                        console.log("id: " + id);
-                        var postQuery = "SELECT * from posts WHERE author=$1";
-                        conn.query(postQuery, [String(id)], function(err, result_posts) {
-                            console.log("results in post query")
-                            console.log(result_posts);
-                            for (var i =0; i < result_posts.rows.length; i++) {
-                                var row_posts = result_posts.rows[i];
-                                finalPosts.push(row_posts) // TODO: send to client!
-                                console.log("fetchign posts: ");
-                                console.log(row_posts);
-                            }
-                        });
-                    }
-
-                });
-            });
-        }
-    });
-
+                        response.send({data: finalPosts});
+                    });
+            }
+        });
 });
 
 function getGeocodeFromLocation(address, callback) {

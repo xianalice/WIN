@@ -407,25 +407,30 @@ function loadPostSearchListener(){
 		var category = this.ptopic.value;
 		console.log(keyword, category);
 
-		if (keyword == "") {
-			loadPostsByCategory(category);
-		} else {
-	    	$.ajax({
-				type: 'get',
-				url: '/searchPostsByKeyword',
-				data: {"category": category, "keyword": keyword},
-				success: function(res) {
-					console.log("in postKeywordSearch response callback");
-					for(var i=0; i < res.data.length; i++) {
-						//SARITA
-						//TODO: Display all posts 
-						console.log(res.data[i]);
-					}
-				}
-			});
-		}
+		searchPostsByKeyword(category, keyword);
 
 	});
+}
+
+//Get all posts in some category that have some keyword
+function searchPostsByKeyword(category, keyword) {
+	if (keyword == "") {
+		loadPostsByCategory(category);
+	} else {
+    	$.ajax({
+			type: 'get',
+			url: '/searchPostsByKeyword',
+			data: {"category": category, "keyword": keyword},
+			success: function(res) {
+				console.log("in postKeywordSearch response callback");
+				for(var i=0; i < res.data.length; i++) {
+					//SARITA
+					//TODO: Display all posts 
+					console.log(res.data[i]);
+				}
+			}
+		});
+	}
 }
 
 
@@ -439,10 +444,65 @@ function loadAdvPostSearchListener(){
 		var keyword = this.advposttext.value;
 		var firstname = this.advfirstposttext.value;
 		var lastname = this.advlastposttext.value;
-		var topic = this.aptopic.value;
-		console.log(keyword, firstname, lastname, topic);
+		var category = this.aptopic.value;
+		console.log(keyword, firstname, lastname, category);
 
-		/* TO DO: BASED ON THESE VALUES, SEND TO BACK END AND GET JSON BACK */
+		//If there's a keyword and some name
+		if(keyword != "" && (firstname != "" || lastname != "")) {
+			//get posts by keyword
+			$.ajax({
+				type: 'get',
+				url: '/searchPostsByKeyword',
+				data: {"category": category, "keyword": keyword},
+				success: function(res) {
+					console.log("in advancedPostKeywordSearch response callback for keyword & author");
+					//get posts by author and combine results that are in both
+					$.ajax({
+						type: 'get',
+						url: '/searchPostsByAuthor',
+						data: {"category": category, "firstName": firstname, "lastName": lastname},
+						success: function(response) {
+							console.log("in second advancedPost response callback for keyword & author");
+							var authorIds = [];
+							for(var i=0; i < response.data.length; i++) {
+								authorIds.push(response.data[i].clientId);
+							}
+							for(var j=0; j < res.data.length; j++) {
+								if(authorIds.indexOf(res.data[j].clientId) != -1) {
+									//SARITA
+									//TODO: Display all posts (res.data[j])
+									console.log(res.data[j]);
+								}
+							}
+						}
+					});
+				}
+			});
+		}
+		//If there's a keyword but no name
+		else if(keyword != "" && firstname == "" && lastname == "") {
+			searchPostsByKeyword(category, keyword);
+		}
+		//If there's no keyword but some name
+		else if(keyword == "" && (firstname != "" || lastname != "")) {
+			$.ajax({
+				type: 'get',
+				url: '/searchPostsByAuthor',
+				data: {"category": category, "firstName": firstname, "lastName": lastname},
+				success: function(res) {
+					console.log("in advancedPost response callback for blank keyword & non blank author");
+					for(var i=0; i < res.data.length; i++) {
+						//SARITA
+						//TODO: Display all posts (res.data[j])
+						console.log(res.data[i]);
+					}
+				}
+			});
+		}
+		//If there is no keyword and no name
+		else {
+			loadPostsByCategory(category);
+		}
 	});
 }
 
