@@ -385,13 +385,18 @@ app.get('/getAllPosts', function(request, response) {
 
 app.get('/searchPostsByKeyword', function(request, response) {
     console.log("in search posts");
-    var keyword = "ello"; //request.body?
+    var keyword = request.query.keyword; 
+    var category = request.query.category;
     var toSearch = snowball.stemword(removePunctuation(keyword));
     console.log("toSearch: " + toSearch);
+   
     var searchWord = "SELECT postId FROM keywords WHERE word=$1";
     var result_posts = [];
     var result_posts_id = []; //list of unique post ids
-    conn.query(searchWord, [toSearch], function(error, result) {
+    
+
+
+    conn.query(searchWord, [toSearch], function(error, result) { //get the post Ids from keywords 
         console.log("length of result: ");
         console.log(result.rows.length);
         console.log(result);
@@ -403,19 +408,20 @@ app.get('/searchPostsByKeyword', function(request, response) {
             }
         }
 
-        for (var i = 0; i < result_posts_id.length; i++) {
-            var searchPosts = "SELECT * FROM posts WHERE id=$1";
-            conn.query(searchPosts, [result_posts_id[i]], function(err, res) {
+        for (var i = 0; i < result_posts_id.length; i++) { //search for the actual posts given the post ids
+            var searchPosts = "SELECT * FROM posts WHERE id=$1 AND category=$2";
+            conn.query(searchPosts, [result_posts_id[i], category], function(err, res) {
                 for (var j = 0; j < res.rows.length; j++) {
                     var post = res.rows[j];
                     console.log("post is ");
                     console.log(post);
                     result_posts.push(post);
                 }
+
+                response.send({data: result_posts});
             });
         }
 
-        //TODO: Send result_posts back to the client to be displayed as search results
     });
 });
 

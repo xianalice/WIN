@@ -382,10 +382,27 @@ function loadPostSearchListener(){
 		e.preventDefault();
 
 		var keyword = this.posttext.value;
-		var topic = this.ptopic.value;
-		console.log(keyword, topic);
+		var category = this.ptopic.value;
+		console.log(keyword, category);
 
-		/* TO DO: BASED ON THESE VALUES, SEND TO BACK END AND GET JSON BACK */
+		if (keyword == "") {
+			loadPostsByCategory(category);
+		} else {
+	    	$.ajax({
+				type: 'get',
+				url: '/searchPostsByKeyword',
+				data: {"category": category, "keyword": keyword},
+				success: function(res) {
+					console.log("in postKeywordSearch response callback");
+					for(var i=0; i < res.data.length; i++) {
+						//SARITA
+						//TODO: Display all posts 
+						console.log(res.data[i]);
+					}
+				}
+			});
+		}
+
 	});
 }
 
