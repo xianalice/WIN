@@ -290,7 +290,11 @@ function fillInUserInfo(data){
 	document.getElementById("pro_pic").style.backgroundImage = 'url(' + data.pictureUrl + ')';  
 
 	/* TO DO: Instead of the random words I gave, put user's name here. */
+<<<<<<< HEAD
 	var user_profile = document.getElementById("my_profile");
+=======
+	var user_picture = document.getElementById("my_profile");
+>>>>>>> 80c20006182faff58821e96feae422277c1f390b
 	document.getElementById("my_profile").innerHTML = '<a href="' + data.publicProfileUrl+'" class="namelink" >' 
 						+ data.firstName + " " + data.lastName + '</a>'; 
 	firstName = data.firstName;
