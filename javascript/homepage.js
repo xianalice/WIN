@@ -163,7 +163,7 @@ function loadCreatePost() {
 			
 			console.log("first Name in post creation: " + firstName + " lastName: " + lastName)
 			
-			console.log(subject, text, firstName, lastName, category); /* TO DO - ADD TO DATABASE - USE BACKEND */
+			console.log(subject, text, firstName, lastName, category); 
 			var data = {"author": clientId, "firstName": firstName, "lastName": lastName, "title": title, "category": category, "text": text}
 			$.ajax({
 				type: 'post',
@@ -173,7 +173,9 @@ function loadCreatePost() {
 					// console.log("created new post and time is ");
 					// var date = new Date(res.data);
 					// console.log(date);
-					loadPostsByCategory(category);
+					//loadPostsByCategory(category);
+					document.getElementById(category).click();
+
 				}
 			});
 
@@ -194,7 +196,7 @@ function loadCreatePost() {
 
 function loadPostsByCategory(category) {
 	console.log("loading posts in " + category);
-	document.getElementById(category).click();
+	// document.getElementById(category).click();
 	data = {"category": category};
 	$.get({
 		url: '/getAllPosts',
