@@ -117,11 +117,24 @@ app.get('/allPeople', function(request, response) {
     });
 });
 
+app.get('/personFromId', function(request, response) {
+    var id = request.query.clientId;
+    console.log("id is ");
+    console.log(id);
+    var query = "SELECT * from people WHERE clientId=$1";
+    console.log("querying people for ID match");
+    conn.query(query, [id], function(error, result) {
+        console.log("result is");
+        console.log(result.rows[0]);
+        response.send({data: result.rows[0]});
+    })
+})
+
 
 //People search works with 3 different get requests: 
-// 1) User has provided both Location and Name (done)
-// 2) User provides just Location (done)
-// 3) User provides just Name (done)
+// 1) User provides just Name 
+// 2) User provides just Location 
+// 3) User has provided both Location and Name 
 
 //The specific Get request is determined by the client depending on which fields in the advanced search bar they provided 
 

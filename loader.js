@@ -16,12 +16,12 @@ var createPosts = "CREATE TABLE posts("
     + "author TEXT,"
     + "body TEXT,"
     + "firstName TEXT,"
-    + "lastName TEXT, "
-    + "time INTEGER," //new 
-    + "title TEXT, " //new
+    + "lastName TEXT,"
+    + "time INTEGER," 
+    + "title TEXT," 
     + "FOREIGN KEY(firstName) REFERENCES people(firstName),"
     + "FOREIGN KEY(lastName) REFERENCES people(lastName),"
-    + "FOREIGN KEY(author) REFERENCES people(id)" 
+    + "FOREIGN KEY(author) REFERENCES people(clientId)" 
     + ")";
 var createPeople = "CREATE TABLE people("
     + "clientId TEXT PRIMARY KEY,"

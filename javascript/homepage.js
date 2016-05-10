@@ -66,12 +66,25 @@ function displayPost(post){
     var day = date.getDate();
     var month = date.getMonth()+1;
     var year = date.getFullYear();
-    li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' 
-    				+ post.firstName + ' ' + post.lastName + '</h2>'
-    				+ '<h3 class="datedisplay">' + day +'/' + month + '/' + year + '</h3>'
-    				+ '<h2 class="title">' + post.title + '</h2>' + '<h2 class="textpost">' + post.body + '</h2>');
-    var lastadded = ul.childNodes.length;
-    ul.insertBefore(li, ul.childNodes[lastadded]);
+
+	console.log("getting author's URLs from Id for post " + post.id + " with author " + post.author);
+	var toSend = {"clientId": post.author};
+
+	$.get({
+		url: '/personFromId',
+		data: toSend,
+		success: function(res) {
+			var profUrl = res.data.profileUrl;
+			var picUrl = res.data.pictureUrl;
+			console.log("profile url is " + profUrl + " and pic url is " + picUrl);
+		    li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' 
+							+ post.firstName + ' ' + post.lastName + '</h2>'
+							+ '<h3 class="datedisplay">' + day +'/' + month + '/' + year + '</h3>'
+							+ '<h2 class="title">' + post.title + '</h2>' + '<h2 class="textpost">' + post.body + '</h2>');
+		    var lastadded = ul.childNodes.length;
+		    ul.insertBefore(li, ul.childNodes[lastadded]);
+		}
+	});
 }
 
 function getProfileData() {
@@ -277,8 +290,8 @@ function fillInUserInfo(data){
 	document.getElementById("pro_pic").style.backgroundImage = 'url(' + data.pictureUrl + ')';  
 
 	/* TO DO: Instead of the random words I gave, put user's name here. */
-	var user_picture = document.getElementById("my_profile");
-	document.getElementById("my_profile").innerHTML = '<a href="' + data.profileUrl+'" class="namelink" >' 
+	var user_profile = document.getElementById("my_profile");
+	document.getElementById("my_profile").innerHTML = '<a href="' + data.publicProfileUrl+'" class="namelink" >' 
 						+ data.firstName + " " + data.lastName + '</a>'; 
 	firstName = data.firstName;
 	lastName = data.lastName;
