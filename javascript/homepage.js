@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function(){
 	loadAdvPostSearchListener();
 	loadOptionsListener();
 	loadCreatePost();
-	// clearList();
 });
 
 
@@ -71,7 +70,8 @@ function displayPost(post){
     				+ post.firstName + ' ' + post.lastName + '</h2>'
     				+ '<h3 class="datedisplay">' + day +'/' + month + '/' + year + '</h3>'
     				+ '<h2 class="title">' + post.title + '</h2>' + '<h2 class="textpost">' + post.body + '</h2>');
-    ul.insertBefore(li, ul.childNodes[0]);
+    var lastadded = ul.childNodes.length;
+    ul.insertBefore(li, ul.childNodes[lastadded]);
 }
 
 function getProfileData() {
