@@ -1,0 +1,7 @@
+Posts:
+- beign added twice
+- author's picture
+ -url of  author's page
+
+People:
+-url of person's page.

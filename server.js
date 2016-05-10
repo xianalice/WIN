@@ -141,7 +141,7 @@ app.get('/searchPeopleByName', function(request, response) {
                 var row_bothNames = result_bothNames.rows[i];
                 console.log("able to find result based on Both Names");
                 console.log(row_bothNames);
-                finalReults.push(row_bothNames);
+                finalResults.push(row_bothNames);
             }
             response.send({
                 data: finalResults

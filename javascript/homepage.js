@@ -32,33 +32,31 @@ document.addEventListener("DOMContentLoaded", function(){
 	loadAdvPostSearchListener();
 	loadOptionsListener();
 	loadCreatePost();
-	displayPost();
-	displayPerson();
 });
 
+//SARITA CHANGES - DOUBLE CHECK FIELD NAMES
 function displayPerson(person){
-	console.log(person);
 	var ul = document.getElementById('results_list');
     var li = document.createElement('li');
     li.classList.add("person");
-    li.innerHTML = ( '<div class="person_pic" style="background-image: none;">' + '</div>' + '<div class="person_holder">' + '<h2 class="name">' + 'Firstname' + ' Lastname' + '</h2>' + '<h3 class="headline">' 
-                            + 'Headline' +  '</h3>' + '<h4 class="thirdline">' + 'location' +'   |   '+ 'industry' + '</div>');
+    li.innerHTML = ( '<div class="person_pic" style="background-image: url(' + person.pictureUrl +');">' + '</div>' + '<div class="person_holder">' + '<h2 class="name">' + person.firstName + ' ' + person.lastName + '</h2>' + '<h3 class="headline">' 
+                            + person.headline +  '</h3>' + '<h4 class="thirdline">' + person.country.toUpperCase() +'   |   '+ person.industry + '</div>');
     ul.parentNode.insertBefore(li, ul.nextSibling); //acts like insertAfter
 }
 
+//SARITA CHANGES - DOUBLE CHECK FIELD NAMES
 function displayPost(post){
-	console.log(post);
 	var ul = document.getElementById('results_list');
     var li = document.createElement('li');
     li.classList.add("post");
-    li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' + 'Firstname' + ' Lastname' + '</h2>'
-    				+ '<h2 class="title">' + 'Title' + '</h2>' + '<h2 class="textpost">' + 'Blah Blah Blah Blah' + '</h2>');
+    li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' + post.firstName + ' ' + post.lastName + '</h2>'
+    				+ '<h2 class="title">' + post.title + '</h2>' + '<h2 class="textpost">' + post.body + '</h2>');
     ul.parentNode.insertBefore(li, ul.nextSibling); //acts like insertAfter
 }
 
 function getProfileData() {
 	console.log("getting profile data");
-	IN.API.Raw("/people/~:(first-name,last-name,picture-url,id, profile-url)").result(onSuccess).error(onError);
+	IN.API.Raw("/people/~:(first-name,last-name,picture-url,id,public-profile-url)").result(onSuccess).error(onError);
 }
 
 function loadCreatePost() {
@@ -206,8 +204,11 @@ function loadPostsByCategory(category) {
 			for(var i=0; i<res.data.length; i++) {
 				//SARITA
 				//TODO: call function to display posts
+				console.log("Sarita look here");
 				console.log(res.data[i]);
+				displayPost(res.data[i]);  //SARITA CHANGES
 			}
+			console.log("I skiped over.");
 		}
 	});
 }
@@ -259,6 +260,8 @@ function fillInUserInfo(data){
 	lastName = data.lastName;
 	clientId = data.id;
 	profileUrl = data.profileUrl;
+
+	displayPeople("","");
 }
 
 /*Listens for input for people search submission (basic) */
@@ -287,6 +290,7 @@ function displayPeople(firstname, lastname) {
 					console.log(res.data[i]);
 					//SARITA
 					//TODO: display 
+					displayPerson(res.data[i]); //SARITA CHANGES
 				}
 			}
 		});
@@ -301,6 +305,7 @@ function displayPeople(firstname, lastname) {
 	    		for(var i=0; i<res.data.length; i++) {
 	    			//SARITA
 	    			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
+	    			displayPerson(res.data[i]); //SARITA CHANGES
 	    			console.log(res.data[i]);
 	    		}
 	    	}
@@ -330,9 +335,12 @@ function loadAdvPeopleSearchListener(){
 	        	data: data,
 	        	success: function(res) {
 	        		console.log("in NameOnly response callback");
+	        		console.log(res);
 	        		for(var i=0; i<res.data.length; i++) {
 	        			//SARITA
 	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
+	        			displayPerson(res.data[i]); //SARITA CHANGES
+	        			console.log("hello it's sarita");
 	        			console.log(res.data[i]);
 	        		}
 	        	}
@@ -371,6 +379,7 @@ function loadAdvPeopleSearchListener(){
 	        		for(var i=0; i<res.data.length; i++) {
 	        			//SARITA
 	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
+	        			displayPerson(res.data[i]); //SARITA CHANGES
 	        			console.log(res.data[i]);
 	        		}
 	        	}
@@ -387,6 +396,7 @@ function loadAdvPeopleSearchListener(){
 	    			for(var i=0; i < res.data.length; i++) {
 	    				//SARITA
 	    				//TODO: Display all people 
+	    				displayPerson(res.data[i]); //SARITA CHANGES
 	    				console.log(res.data[i]);
 	    			}
 	    		}
@@ -427,6 +437,7 @@ function searchPostsByKeyword(category, keyword) {
 				for(var i=0; i < res.data.length; i++) {
 					//SARITA
 					//TODO: Display all posts 
+					displayPost(res.data[i]); //SARITA CHANGES 
 					console.log(res.data[i]);
 				}
 			}
@@ -472,6 +483,7 @@ function loadAdvPostSearchListener(){
 								if(authorIds.indexOf(res.data[j].clientId) != -1) {
 									//SARITA
 									//TODO: Display all posts (res.data[j])
+									displayPost(res.data[j]); //SARITA CHANGES
 									console.log(res.data[j]);
 								}
 							}
@@ -495,6 +507,7 @@ function loadAdvPostSearchListener(){
 					for(var i=0; i < res.data.length; i++) {
 						//SARITA
 						//TODO: Display all posts (res.data[j])
+						displayPost(res.data[i]); //SARITA CHANGES
 						console.log(res.data[i]);
 					}
 				}
