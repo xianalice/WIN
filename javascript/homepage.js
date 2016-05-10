@@ -52,7 +52,8 @@ function displayPerson(person){
     				+ '<h2 class="name"> <a href=' + person.profileUrl +' class = "namelink">' + person.firstName + ' ' 
     				+ person.lastName + '</a> </h2>' 
     				+ '<h3 class="headline">' + person.headline +  '</h3>' + '<h4 class="thirdline">' 
-    				+ person.country.toUpperCase() +'   |   '+ person.industry + '</div>');
+    				+ person.location +'   |   '+ person.country.toUpperCase() + '</h4>'
+    				+ '<h5 class="industry">' + person.industry + '</h5></div>');
     ul.insertBefore(li, ul.childNodes[0]);
 }
 
@@ -77,9 +78,9 @@ function displayPost(post){
 			var profUrl = res.data.profileUrl;
 			var picUrl = res.data.pictureUrl;
 			console.log("profile url is " + profUrl + " and pic url is " + picUrl);
-		    li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' 
-							+ post.firstName + ' ' + post.lastName + '</h2>'
-							+ '<h3 class="datedisplay">' + day +'/' + month + '/' + year + '</h3>'
+		    li.innerHTML = ( '<div class="post_pic" style="background-image: url(' + picUrl + ');">' + '</div>'+ '<a class="post_name" href='
+		    				+ profUrl + '>' + post.firstName + ' ' + post.lastName + '</a>'
+							+ '<h3 class="datedisplay">' + month +'/' + day + '/' + year + '</h3>'
 							+ '<h2 class="title">' + post.title + '</h2>' + '<h2 class="textpost">' + post.body + '</h2>');
 		    var lastadded = ul.childNodes.length;
 		    ul.insertBefore(li, ul.childNodes[lastadded]);
@@ -190,9 +191,9 @@ function loadCreatePost() {
 			document.getElementById("create_holder").style.display = "none";
 			clicknumbers++;
 			
-			var title = this.subject.value;
-			var text = this.create_element.value;
-			var category = this.ctopic.value;
+			var title = this.subject.value.trim();
+			var text = this.create_element.value.trim();
+			var category = this.ctopic.value.trim();
 			
 			console.log("first Name in post creation: " + firstName + " lastName: " + lastName)
 			
@@ -203,12 +204,7 @@ function loadCreatePost() {
 				url: '/newPost',
 				data: data,
 				success: function(res) {
-					// console.log("created new post and time is ");
-					// var date = new Date(res.data);
-					// console.log(date);
-					//loadPostsByCategory(category);
 					document.getElementById(category).click();
-
 				}
 			});
 
@@ -238,13 +234,9 @@ function loadPostsByCategory(category) {
 			console.log("displaying posts for " + category);
 			clearList();
 			for(var i=0; i<res.data.length; i++) {
-				//SARITA
-				//TODO: call function to display posts
-				console.log("Sarita look here");
 				console.log(res.data[i]);
-				displayPost(res.data[i]);  //SARITA CHANGES
+				displayPost(res.data[i]);
 			}
-			console.log("I skiped over.");
 		}
 	});
 }
@@ -289,12 +281,8 @@ function fillInUserInfo(data){
 	var user_picture = document.getElementById("pro_pic");
 	document.getElementById("pro_pic").style.backgroundImage = 'url(' + data.pictureUrl + ')';  
 
-	/* TO DO: Instead of the random words I gave, put user's name here. */
-<<<<<<< HEAD
 	var user_profile = document.getElementById("my_profile");
-=======
-	var user_picture = document.getElementById("my_profile");
->>>>>>> 80c20006182faff58821e96feae422277c1f390b
+
 	document.getElementById("my_profile").innerHTML = '<a href="' + data.publicProfileUrl+'" class="namelink" >' 
 						+ data.firstName + " " + data.lastName + '</a>'; 
 	firstName = data.firstName;
@@ -312,8 +300,8 @@ function loadPeopleSearchListener(){
 	peoplesearch.addEventListener('submit', function(e) {
 		e.preventDefault();
 
-		var firstname = this.firstpeopletext.value;
-		var lastname = this.lastpeopletext.value;
+		var firstname = this.firstpeopletext.value.trim();
+		var lastname = this.lastpeopletext.value.trim();
 		console.log(firstname, lastname);
 		displayPeople(firstname, lastname);
 	});
@@ -364,12 +352,13 @@ function loadAdvPeopleSearchListener(){
 	advpeoplesearch.addEventListener('submit', function(e) {
 		e.preventDefault();
 
-		var firstname = this.advfirstpeopletext.value;
-		var lastname = this.advlastpeopletext.value;
-		var location = this.advlocation.value;
-		var radius = this.advradius.value;
+		var firstname = this.advfirstpeopletext.value.trim();
+		var lastname = this.advlastpeopletext.value.trim();
+		var location = this.advlocation.value.trim();
+		var radius = this.advradius.value.trim();
 		console.log(firstname, lastname, location, radius);
 		var data = {"firstName":firstname, "lastName":lastname, "location":location, "radius":radius};
+
 
 
 		if(location == "" && (firstname != "" || lastname != "")) {
@@ -382,10 +371,7 @@ function loadAdvPeopleSearchListener(){
 	        		console.log(res);
 	        		clearList();
 	        		for(var i=0; i<res.data.length; i++) {
-	        			//SARITA
-	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
-	        			displayPerson(res.data[i]); //SARITA CHANGES
-	        			console.log("hello it's sarita");
+	        			displayPerson(res.data[i]); 
 	        			console.log(res.data[i]);
 	        		}
 	        	}
@@ -401,10 +387,10 @@ function loadAdvPeopleSearchListener(){
 	        	url:'/searchPeopleByLocation',
 	        	data: data,
 	        	success: function(res) {
+	        		clearList();
 	        		console.log("in Location response callback");
 	        		for(var i=0; i<res.data.length; i++) {
-	        			//SARITA
-	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
+	        			displayPerson(res.data[i]);
 	        			console.log(res.data[i]);
 	        		}
 	        	}
@@ -423,9 +409,7 @@ function loadAdvPeopleSearchListener(){
 	        		console.log("in NameLocation response callback");
 	        		clearList();
 	        		for(var i=0; i<res.data.length; i++) {
-	        			//SARITA
-	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
-	        			displayPerson(res.data[i]); //SARITA CHANGES
+	        			displayPerson(res.data[i]);
 	        			console.log(res.data[i]);
 	        		}
 	        	}
@@ -441,9 +425,7 @@ function loadAdvPeopleSearchListener(){
 	    			console.log("in allPeople response callback");
 	    			clearList();
 	    			for(var i=0; i < res.data.length; i++) {
-	    				//SARITA
-	    				//TODO: Display all people 
-	    				displayPerson(res.data[i]); //SARITA CHANGES
+	    				displayPerson(res.data[i]); 
 	    				console.log(res.data[i]);
 	    			}
 	    		}
@@ -461,8 +443,8 @@ function loadPostSearchListener(){
 		console.log("hello");
 		e.preventDefault();
 
-		var keyword = this.posttext.value;
-		var category = this.ptopic.value;
+		var keyword = this.posttext.value.trim();
+		var category = this.ptopic.value.trim();
 		console.log(keyword, category);
 
 		searchPostsByKeyword(category, keyword);
@@ -483,16 +465,13 @@ function searchPostsByKeyword(category, keyword) {
 				console.log("in postKeywordSearch response callback");
 				clearList();
 				for(var i=0; i < res.data.length; i++) {
-					//SARITA
-					//TODO: Display all posts 
-					displayPost(res.data[i]); //SARITA CHANGES 
+					displayPost(res.data[i]); 
 					console.log(res.data[i]);
 				}
 			}
 		});
 	}
 }
-
 
 /*Listens for input for post search submission (advanced) */
 function loadAdvPostSearchListener(){
@@ -501,10 +480,10 @@ function loadAdvPostSearchListener(){
 	advpostsearch.addEventListener('submit', function(e) {
 		e.preventDefault();
 
-		var keyword = this.advposttext.value;
-		var firstname = this.advfirstposttext.value;
-		var lastname = this.advlastposttext.value;
-		var category = this.aptopic.value;
+		var keyword = this.advposttext.value.trim();
+		var firstname = this.advfirstposttext.value.trim();
+		var lastname = this.advlastposttext.value.trim();
+		var category = this.aptopic.value.trim();
 		console.log(keyword, firstname, lastname, category);
 
 		//If there's a keyword and some name
@@ -530,9 +509,7 @@ function loadAdvPostSearchListener(){
 							clearList();
 							for(var j=0; j < res.data.length; j++) {
 								if(authorIds.indexOf(res.data[j].clientId) != -1) {
-									//SARITA
-									//TODO: Display all posts (res.data[j])
-									displayPost(res.data[j]); //SARITA CHANGES
+									displayPost(res.data[j]); 
 									console.log(res.data[j]);
 								}
 							}
@@ -555,9 +532,7 @@ function loadAdvPostSearchListener(){
 					console.log("in advancedPost response callback for blank keyword & non blank author");
 					clearList();
 					for(var i=0; i < res.data.length; i++) {
-						//SARITA
-						//TODO: Display all posts (res.data[j])
-						displayPost(res.data[i]); //SARITA CHANGES
+						displayPost(res.data[i]); 
 						console.log(res.data[i]);
 					}
 				}

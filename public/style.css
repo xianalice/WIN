@@ -411,6 +411,7 @@ form {
     width: 75%;
     height: 345px;
     background-image: url("new_post_block.png");
+    background-repeat: no-repeat;
 }
 
 .person {
@@ -421,23 +422,41 @@ form {
     width: 75%;
     height: 123px;
     background-image: url("People_Post_Background.png");
+    background-repeat: no-repeat;
 }
 
 .headline {
 	display: block;
     text-align: left;
-    margin: 5px 0px 0px 0px;
+    padding: none;
+    border: none;
+    margin: 0px 0px 0px 0px;
     font-family: 'Avenir';
     color: #333333;
     font-size: 14pt;
 }
 
 .thirdline {
-	margin: 5px 0px 0px 0px;
+	margin: 3px 0px 0px 0px;
+	padding: none;
+	border: none;
     text-align: left;
     font-family: 'Avenir';
     color: #8c8c8c;
+    font-size: 11pt;
 }
+
+.industry {
+	margin: 3px 0px 0px 0px;
+	height: 20px;
+    text-align: left;
+    padding: none;
+    border: none;
+    font-family: 'Avenir';
+    color: #8c8c8c;
+    font-size: 11pt;
+}
+
 .person_holder {
 	display: inline-block;
     width: 70%;
@@ -455,8 +474,8 @@ form {
 }
 
 .person_pic {
-	height: 100px;
-    width: 100px;
+	height: 90px;
+    width: 90px;
     display: inline-block;
     float: left;
     margin: 12px 14px 0px;
@@ -468,6 +487,8 @@ form {
 	color: #005c99;
 	font-size: 10pt;
 	display: inline-block;
+	padding-left: 5%;
+	margin-left: 175px;
 }
 
 .namelink {
@@ -484,9 +505,11 @@ form {
 	height: 40px;
     width: 40px;
     display: none;
-    /*display: inline-block;*/
+    display: inline-block;
     float: left;
     margin: 12px 14px 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .title {
@@ -494,6 +517,7 @@ form {
     font-family: 'Avenir';
     text-decoration: underline;
     font-size: 22pt;
+    padding-right: 50px;
 }
 
 .textpost {
@@ -506,10 +530,11 @@ form {
 
 .post_name {
 	display: inline-block;
-    width: 83%;
-    font-size: 11pt;
-    text-align: left;
-    margin-top: 21px;
-    font-family: 'Avenir';
-    color: #005c99;
+	font-size: 11pt;
+	text-align: left;
+	margin-top: 21px;
+	font-family: 'Avenir';
+	color: #005c99;
+	margin-left: -50px;
+	text-decoration: none;
 }

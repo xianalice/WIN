@@ -63,13 +63,14 @@ app.post('/login', function(request, response) {
                         var latitude = geoInfo.results[0].geometry.location.lat;
                         var longitude = geoInfo.results[0].geometry.location.lng;
                         console.log("lat is " + latitude + " and long is " + longitude);
-                        var addPerson = "INSERT into people VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
+                        var addPerson = "INSERT into people VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)";
                         conn.query(addPerson, [String(request.body.id),
                             String(request.body.firstName),
                             String(request.body.lastName),
                             latitude,
                             longitude,
                             String(request.body.location.country.code),
+                            String(request.body.location.name),
                             String(request.body.industry),
                             String(request.body.headline),
                             String(request.body.publicProfileUrl),
@@ -117,6 +118,7 @@ app.get('/allPeople', function(request, response) {
     });
 });
 
+//Given a person's ID, get the rest of their info from the database
 app.get('/personFromId', function(request, response) {
     var id = request.query.clientId;
     console.log("id is ");
