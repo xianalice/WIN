@@ -32,7 +32,13 @@ document.addEventListener("DOMContentLoaded", function(){
 	loadAdvPostSearchListener();
 	loadOptionsListener();
 	loadCreatePost();
+	// clearList();
 });
+
+
+function clearList(){
+	$("ul").empty();
+}
 
 //SARITA CHANGES - DOUBLE CHECK FIELD NAMES
 function displayPerson(person){
@@ -41,7 +47,7 @@ function displayPerson(person){
     li.classList.add("person");
     li.innerHTML = ( '<div class="person_pic" style="background-image: url(' + person.pictureUrl +');">' + '</div>' + '<div class="person_holder">' + '<h2 class="name">' + person.firstName + ' ' + person.lastName + '</h2>' + '<h3 class="headline">' 
                             + person.headline +  '</h3>' + '<h4 class="thirdline">' + person.country.toUpperCase() +'   |   '+ person.industry + '</div>');
-    ul.parentNode.insertBefore(li, ul.nextSibling); //acts like insertAfter
+    ul.insertBefore(li, ul.childNodes[0]);
 }
 
 //SARITA CHANGES - DOUBLE CHECK FIELD NAMES
@@ -51,7 +57,7 @@ function displayPost(post){
     li.classList.add("post");
     li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' + post.firstName + ' ' + post.lastName + '</h2>'
     				+ '<h2 class="title">' + post.title + '</h2>' + '<h2 class="textpost">' + post.body + '</h2>');
-    ul.parentNode.insertBefore(li, ul.nextSibling); //acts like insertAfter
+    ul.insertBefore(li, ul.childNodes[0]);
 }
 
 function getProfileData() {
@@ -203,6 +209,7 @@ function loadPostsByCategory(category) {
 		data: data,
 		success: function(res) {
 			console.log("displaying posts for " + category);
+			clearList();
 			for(var i=0; i<res.data.length; i++) {
 				//SARITA
 				//TODO: call function to display posts
@@ -288,12 +295,14 @@ function displayPeople(firstname, lastname) {
 			url: '/allPeople',
 			success: function(res) {
 				console.log("in basic search getting all people");
+				clearList();
 				for (var i=0; i < res.data.length; i++) {
 					console.log(res.data[i]);
 					//SARITA
 					//TODO: display 
 					displayPerson(res.data[i]); //SARITA CHANGES
 				}
+
 			}
 		});
 	} else {
@@ -304,6 +313,7 @@ function displayPeople(firstname, lastname) {
 	    	data: data,
 	    	success: function(res) {
 	    		console.log("in Name response callback");
+	    		clearList();
 	    		for(var i=0; i<res.data.length; i++) {
 	    			//SARITA
 	    			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
@@ -338,6 +348,7 @@ function loadAdvPeopleSearchListener(){
 	        	success: function(res) {
 	        		console.log("in NameOnly response callback");
 	        		console.log(res);
+	        		clearList();
 	        		for(var i=0; i<res.data.length; i++) {
 	        			//SARITA
 	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
@@ -378,6 +389,7 @@ function loadAdvPeopleSearchListener(){
 	        	data: data,
 	        	success: function(res) {
 	        		console.log("in NameLocation response callback");
+	        		clearList();
 	        		for(var i=0; i<res.data.length; i++) {
 	        			//SARITA
 	        			//TODO: Display a person 'card' for each entry i in data array - use a single function for all these
@@ -395,6 +407,7 @@ function loadAdvPeopleSearchListener(){
 	    		url: '/allPeople',
 	    		success: function(res) {
 	    			console.log("in allPeople response callback");
+	    			clearList();
 	    			for(var i=0; i < res.data.length; i++) {
 	    				//SARITA
 	    				//TODO: Display all people 
@@ -436,6 +449,7 @@ function searchPostsByKeyword(category, keyword) {
 			data: {"category": category, "keyword": keyword},
 			success: function(res) {
 				console.log("in postKeywordSearch response callback");
+				clearList();
 				for(var i=0; i < res.data.length; i++) {
 					//SARITA
 					//TODO: Display all posts 
@@ -481,6 +495,7 @@ function loadAdvPostSearchListener(){
 							for(var i=0; i < response.data.length; i++) {
 								authorIds.push(response.data[i].clientId);
 							}
+							clearList();
 							for(var j=0; j < res.data.length; j++) {
 								if(authorIds.indexOf(res.data[j].clientId) != -1) {
 									//SARITA
@@ -506,6 +521,7 @@ function loadAdvPostSearchListener(){
 				data: {"category": category, "firstName": firstname, "lastName": lastname},
 				success: function(res) {
 					console.log("in advancedPost response callback for blank keyword & non blank author");
+					clearList();
 					for(var i=0; i < res.data.length; i++) {
 						//SARITA
 						//TODO: Display all posts (res.data[j])
