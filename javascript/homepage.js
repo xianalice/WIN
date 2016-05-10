@@ -40,7 +40,7 @@ function clearList(){
 	$("ul").empty();
 }
 
-//SARITA CHANGES - DOUBLE CHECK FIELD NAMES
+
 function displayPerson(person){
 	var ul = document.getElementById('results_list');
     var li = document.createElement('li');
@@ -57,8 +57,9 @@ function displayPerson(person){
     ul.insertBefore(li, ul.childNodes[0]);
 }
 
-//SARITA CHANGES - DOUBLE CHECK FIELD NAMES
+
 function displayPost(post){
+	console.log(post);
 	var ul = document.getElementById('results_list');
     var li = document.createElement('li');
     li.classList.add("post");
@@ -66,7 +67,9 @@ function displayPost(post){
     var day = date.getDate();
     var month = date.getMonth()+1;
     var year = date.getFullYear();
-    li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' + post.firstName + ' ' + post.lastName + '</h2>'
+    li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' 
+    				+ post.firstName + ' ' + post.lastName + '</h2>'
+    				+ '<h3 class="datedisplay">' + day +'/' + month + '/' + year + '</h3>'
     				+ '<h2 class="title">' + post.title + '</h2>' + '<h2 class="textpost">' + post.body + '</h2>');
     ul.insertBefore(li, ul.childNodes[0]);
 }
