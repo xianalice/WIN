@@ -45,6 +45,7 @@ h3 {
 	display: inline-block;
 	width: 30px;
 	height: 30px;
+	background-color: red;
 	background-size: cover;
 	float: right;
 	margin: 10px 100px 4px 0px;
@@ -388,7 +389,10 @@ form {
 }
 
 #results {
-	margin: 10px 10px 10px 10px;
+	margin: 20px 50px 20px 50px;
+	text-align: center;
+	height: 500px;
+	overflow-y: scroll;
 }
 
 #results_list {
@@ -396,12 +400,96 @@ form {
 	padding-left: 0px;
 }
 
-.result {
+.post {
 	margin: 20px auto 20px auto;
     float: center;
     list-style-type: none;
     background-size: 100%;
-    width: 50%;
-    height: 338px;
-    background-image: url("post_block.png");
+    width: 75%;
+    height: 345px;
+    background-image: url("new_post_block.png");
+}
+
+.person {
+	margin: 20px auto 20px auto;
+    float: center;
+    list-style-type: none;
+    background-size: 100%;
+    width: 75%;
+    height: 123px;
+    background-image: url("People_Post_Background.png");
+}
+
+.headline {
+	display: block;
+    text-align: left;
+    margin: 5px 0px 0px 0px;
+    font-family: 'Avenir';
+    color: #333333;
+    font-size: 14pt;
+}
+
+.thirdline {
+	margin: 5px 0px 0px 0px;
+    text-align: left;
+    font-family: 'Avenir';
+    color: #8c8c8c;
+}
+.person_holder {
+	display: inline-block;
+    width: 70%;
+    height: 100px;
+}
+
+.name {
+	color: #005c99;
+    width: 100%;
+    font-family: 'Avenir';
+    display: block;
+    text-align: left;
+    font-size: 20pt;
+    margin: 10px 0px 0px 0px;
+}
+
+.person_pic {
+	height: 100px;
+    width: 100px;
+    display: inline-block;
+    background-color: green;
+    float: left;
+    margin: 12px 14px 0px;
+}
+
+.post_pic {
+	height: 40px;
+    width: 40px;
+    display: inline-block;
+    background-color: green;
+    float: left;
+    margin: 12px 14px 0px;
+}
+
+.title {
+	margin: 10px 10px 10px 10px;
+    font-family: 'Avenir';
+    text-decoration: underline;
+    font-size: 22pt;
+}
+
+.textpost {
+	margin: 15px 15px 15px 15px;
+    font-family: 'Avenir';
+    text-align: left;
+    font-size: 12pt;
+    color: #505050;
+}
+
+.post_name {
+	display: inline-block;
+    width: 83%;
+    font-size: 11pt;
+    text-align: left;
+    margin-top: 21px;
+    font-family: 'Avenir';
+    color: #005c99;
 }
