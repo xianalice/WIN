@@ -45,6 +45,8 @@ function displayPerson(person){
 	var ul = document.getElementById('results_list');
     var li = document.createElement('li');
     li.classList.add("person");
+    var profileUrl = person.profileUrl;
+    var pictureUrl = person.pictureUrl;
     li.innerHTML = ( '<div class="person_pic" style="background-image: url(' + person.pictureUrl +');">' + '</div>' + '<div class="person_holder">' + '<h2 class="name">' + person.firstName + ' ' + person.lastName + '</h2>' + '<h3 class="headline">' 
                             + person.headline +  '</h3>' + '<h4 class="thirdline">' + person.country.toUpperCase() +'   |   '+ person.industry + '</div>');
     ul.insertBefore(li, ul.childNodes[0]);
@@ -55,6 +57,10 @@ function displayPost(post){
 	var ul = document.getElementById('results_list');
     var li = document.createElement('li');
     li.classList.add("post");
+    var date = new Date(post.time);
+    var day = date.getDate();
+    var month = date.getMonth()+1;
+    var year = date.getFullYear();
     li.innerHTML = ( '<div class="post_pic" style="background-image: none;">' + '</div>'+ '<h2 class="post_name">' + post.firstName + ' ' + post.lastName + '</h2>'
     				+ '<h2 class="title">' + post.title + '</h2>' + '<h2 class="textpost">' + post.body + '</h2>');
     ul.insertBefore(li, ul.childNodes[0]);
