@@ -7,7 +7,7 @@
     <script type="text/javascript" src="//platform.linkedin.com/in.js">
           api_key:   77ans69don4w9y
           authorize: true
-          onLoad:    linkedin 
+          onLoad: getProfileData
     </script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="text/javascript" src="homepage.js"> </script>
@@ -28,7 +28,27 @@
 	    		<div class="bar"></div>
 	    	</div>
 	    	<div id="main"> 
-	    		
+	    		<div id="create_holder"> 
+	    			<h1> Create a New Post! </h1>
+		    		<div id='categories'>                   <!-- New STuff -->
+		    			<div id="cjobs"> </div>
+		    			<div id="cstartups"> </div>
+		    			<div id="cfunding"> </div>
+		    			<div id="cevents"> </div>
+		    		</div>
+		    		<label id="required" class = "required"> *Please Choose a Category for your Post </label>
+		    		<form id="create_form">
+		    			<input type="hidden" name="ctopic" id="ctopic" value="">  <!-- New STuff -->
+		    			<input type="text" placeholder="Type a subject for your post" name="subject" id="subject" >
+		    			<label id="required2" class = "required" > *Please Choose a Subject for your Post </label>
+		    			<textarea rows="10" cols="30" placeholder = "What's on your mind?" name="create_element" id="create_element"></textarea> 
+		    			<label id="required3" class = "required" > *Please Choose a Category for your Post </label>
+       	                <input type="submit" class="button" value="Create Post">
+					</form>
+					<form id="exit_form">
+       	                <input type="submit" class="button" value="Cancel">
+					</form>
+	    		</div>
 	    		<div id='search_buttons'>
 	    			<div id="people"> </div>
 	    			<div id="jobs"> </div>
@@ -54,7 +74,7 @@
 					<form id="post_search">
             	        <input type="text" class="searchbar" placeholder="Enter Keyword..." name="posttext" id="posttext" >
             	        <input type="hidden" name="ptopic" id="ptopic" value="">
-       	                <input type="submit" class="button" value="Search for Keyword">
+       	                <input type="submit" class="button" value="Search for Post">          <!-- Change is here -->
 					</form>
 					<form id="adv_post_search">
             	        <input type="text" class="psearchbar" placeholder="Enter Keyword..." name="advposttext" id="advposttext" >
@@ -72,10 +92,8 @@
 	    		</div>
 	    	</div>
 	    	<div id="right">
-				<div id="create">
-					<form>
-       	                <input type="button" id="create_new_button" class="button" value="">
-					</form>
+	    		<h3> Click to Create a New Post! </h3>  <!-- New -->
+				<div id="create" style="cursor: pointer">  <!-- New -->
 				</div>
 				<div class="bar"></div>
 	    	</div>

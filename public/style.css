@@ -14,6 +14,20 @@ body {
 	margin: 0px;
 }
 
+h3 {
+	color: white;
+	font-family: 'Avenir';
+	margin: 0px;
+	font-size: 12pt;
+}
+
+.required {
+	display: none;
+	width: 100%;
+    font-size: 10pt;
+    color: red;
+    margin-bottom: 20px;
+}
 
 #holder {
 	width: 100%;
@@ -31,7 +45,6 @@ body {
 	display: inline-block;
 	width: 30px;
 	height: 30px;
-	background-color: red;
 	background-size: cover;
 	float: right;
 	margin: 10px 100px 4px 0px;
@@ -122,7 +135,7 @@ body {
 	height: 80px;
 	background-image: url("post.png");
 	background-size: cover;
-	margin: 5px 0px 30px 15px;
+	margin: 5px 0px 10px 15px;
 }
 
 #spacer {
@@ -131,14 +144,102 @@ body {
 	margin: 5px 0px 30px 15px;
 }
 
+#subject {
+	margin-top: 0px;
+	font-family: 'Avenir';
+	background-image: url("Danny_GreyBackgroundColor.jpg");
+	height: 30px;
+	font-size: 12pt;
+	width: 100%;
+	margin: 10px 50px 10px 50px;
+}
+#create_form {	
+	width: 82%;
+}
+
+#create_element {
+	font-family: 'Avenir';
+	background-image: url("Danny_GreyBackgroundColor.jpg");
+	font-size: 12pt;
+	height: 150px;
+	width: 100%;
+	margin: 0px 50px 0px 50px;
+}
 
 #search_buttons {
 	float: center;
 	text-align: center;
 }
 
+#categories {
+	float: center;
+	text-align: center;
+}
+
+#cjobs {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 107px;
+    display: inline-block;
+    background-position: -142px 0px;
+    background-image: url("options.png");
+}
+
+#cstartups {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 131px;
+    display: inline-block;
+    background-position: -254px 0px;
+    background-image: url("options.png");
+}
+
+#cfunding {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 137px;
+    display: inline-block;
+    background-position: -391px 0px;
+    background-image: url("options.png");
+}
+
+#cevents {
+	border-width: 3px;
+    border-color: transparent;
+    border-style: solid;
+    background-size: cover;
+    height: 40px;
+    width: 113px;
+    display: inline-block;
+    background-position: -535px 0px;
+    background-image: url("options.png");
+}
+
+#create_holder {
+	display: none;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #B0B0B0;
+    margin: 0px 15px 15px 15px;
+}
+
 #search_buttons :hover {
 	border-color: #909090  ;
+}
+
+h1 {
+	text-align: center;
+	font-family: 'Avenir';
+	color: white;
 }
 
 label {

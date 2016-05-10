@@ -23,8 +23,7 @@ function onSuccess(data) {
         success: function(res) {
             document.location.href = res.redirect;
         }
-    }
-    );
+    });
 }
 
 // Handle an error response from the API call
