@@ -12,6 +12,8 @@ html {
 
 body {
 	margin: 0px;
+	position: absolute;
+	width: 100%;
 }
 
 h3 {
