@@ -11,6 +11,7 @@ var clicknumbers = 0;
 var firstName;
 var lastName;
 var clientId;
+var profileUrl;
 
 //Set up input functionality
 document.addEventListener("DOMContentLoaded", function(){
@@ -57,7 +58,7 @@ function displayPost(post){
 
 function getProfileData() {
 	console.log("getting profile data");
-	IN.API.Raw("/people/~:(first-name,last-name,picture-url,id)").result(onSuccess).error(onError);
+	IN.API.Raw("/people/~:(first-name,last-name,picture-url,id, profile-url)").result(onSuccess).error(onError);
 }
 
 function loadCreatePost() {
@@ -257,7 +258,7 @@ function fillInUserInfo(data){
 	firstName = data.firstName;
 	lastName = data.lastName;
 	clientId = data.id;
-
+	profileUrl = data.profileUrl;
 }
 
 /*Listens for input for people search submission (basic) */
